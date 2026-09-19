@@ -276,6 +276,14 @@ html[dir="rtl"] .marquee-track {
   .project-marquee-row {
     height: clamp(200px, 52vw, 300px);
   }
+
+  /* The gap was a fixed 2rem: fine next to a 500px-tall desktop image, but
+     next to a ~150-300px phone image it reads as a big empty stripe. Scale
+     it down with the row instead so the spacing feels the same proportion
+     of the image at any width. */
+  .project-marquee-track {
+    gap: clamp(0.5rem, 3.2vw, 1.1rem);
+  }
 }
 
 

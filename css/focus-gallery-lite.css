@@ -1,0 +1,38 @@
+/*
+ * Focus gallery — lighter paint on small screens.
+ *
+ * Load AFTER css/focus-gallery.css. Nothing here changes the layout or the
+ * motion: it only removes paint work that a phone GPU pays for on every tile,
+ * on every frame, while the whole wall is moving.
+ *
+ *   - the soft drop shadow under each tile is a blurred layer per tile
+ *     (~30 of them): replaced by a flat, cheaper frame
+ *   - smaller corner radius = a cheaper rounded clip per tile
+ *   - the columns are the only things that move, so only they are promoted
+ *     to their own GPU layer; the tiles inside them ride along for free
+ */
+
+@media (max-width: 780px) {
+  .fg-frame {
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .focus-gallery {
+    --fg-radius: 10px;
+  }
+
+  /* One layer per column instead of one per tile. */
+  .focus-scroll.is-active .fg-tile,
+  .focus-scroll.is-active .fg-frame,
+  .focus-scroll.is-active .fg-media {
+    will-change: auto;
+  }
+}
+
+/* Very small phones: the tiles are ~150px wide, so the labels can breathe less. */
+@media (max-width: 480px) {
+  .fg-name {
+    font-size: 0.625rem;
+  }
+}
