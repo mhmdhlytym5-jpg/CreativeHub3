@@ -213,6 +213,9 @@
 
   var MAX_VIDEOS = 3;        // never autoplay more than this at once
   var PRELOAD_SCREENS = 1.2; // load media this far outside the stage
+  var VIDEO_PAD_MULT = 1.7;  // videos get this much extra runway to actually buffer before they're asked to play
+  var LOAD_BUDGET = 4;       // new tiles allowed to START loading per tick — spreads a burst of image
+                             // decodes / video buffering across a few ticks instead of one busy frame
   var MEDIA_TICK_MS = 140;   // how often loading / playback is re-evaluated
 
   /* ================================================================== */
@@ -230,6 +233,36 @@
   var saveData = !!(navigator.connection && navigator.connection.saveData);
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var api = window.FocusScroll;
+
+  /* ---------------- Phones and tablets: a lighter build --------------
+   * Same wall, same motion — just less of it in memory at once:
+   *   - only LITE_ITEMS tiles per project (every project is still there)
+   *   - one video playing instead of MAX_VIDEOS
+   *   - media is released again once it is far behind / ahead
+   *   - no per-tile ripple while the wall rises (six transforms per frame)
+   * The columns end up shorter, so syncHoldDistance() also shortens the
+   * scroll track on its own: the wall keeps the same pace, over less scroll.
+   * ------------------------------------------------------------------ */
+  var lite = window.matchMedia('(hover: none), (pointer: coarse), (max-width: 780px)').matches;
+  var LITE_ITEMS = 3;          // tiles kept per project on small screens
+  var UNLOAD_SCREENS = 2.5;    // release media this far outside the stage (lite only)
+
+  if (lite) {
+    MAX_VIDEOS = 1;
+    PRELOAD_SCREENS = 0.7;
+    MEDIA_TICK_MS = 220;
+    TILE_LAG_COUNT = 0;
+    LOAD_BUDGET = 2;
+    DRIFT = 0;              // no sideways reveal: the wall never needs it —
+                             // only two columns, both fully on screen already
+  }
+
+  // Safari on older iOS cannot play WebM: those tiles would stay empty grey
+  // boxes, so they are left out of the wall entirely.
+  var canWebm = (function () {
+    var v = document.createElement('video');
+    return !!(v.canPlayType && v.canPlayType('video/webm').replace(/no/, ''));
+  })();
 
   function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
   function range(v, a, b) { return b > a ? clamp((v - a) / (b - a), 0, 1) : (v >= b ? 1 : 0); }
@@ -253,6 +286,27 @@
   var cols = [];
   var allTiles = [];
   var groupNo = 0;
+
+  /* ---------------- Phones: two columns instead of five ---------------
+   * Same projects, same order — every group from every column is kept —
+   * just poured into two strips instead of five, alternating left/right.
+   * Opposite lead values (-1 / 1) are what makes the two columns drift up
+   * at visibly different rates as the wall rises and scrolls.
+   * ------------------------------------------------------------------ */
+  var BUILD_COLUMNS = COLUMNS;
+  if (lite) {
+    var flatGroups = [];
+    COLUMNS.forEach(function (c) {
+      (c.groups || []).forEach(function (g) { flatGroups.push(g); });
+    });
+
+    var liteCol0 = { width: 1, offset: 3, lead: -1, groups: [] };
+    var liteCol1 = { width: 1, offset: 11, lead: 1, groups: [] };
+    flatGroups.forEach(function (g, i) {
+      (i % 2 === 0 ? liteCol0 : liteCol1).groups.push(g);
+    });
+    BUILD_COLUMNS = [liteCol0, liteCol1];
+  }
 
   function makeTile(item, group, isFirst) {
     var fig = document.createElement('figure');
@@ -297,7 +351,7 @@
     };
   }
 
-  COLUMNS.forEach(function (cfg, ci) {
+  BUILD_COLUMNS.forEach(function (cfg, ci) {
     var colEl = document.createElement('div');
     colEl.className = 'fg-col';
     colEl.setAttribute('role', 'group');
@@ -330,7 +384,12 @@
       colEl.appendChild(name);
       names.push(group.en);
 
-      (group.items || []).forEach(function (item, ii) {
+      var items = (group.items || []).filter(function (it) {
+        return !it.video || canWebm;
+      });
+      if (lite && items.length > LITE_ITEMS) items = items.slice(0, LITE_ITEMS);
+
+      items.forEach(function (item, ii) {
         var tile = makeTile(item, group, ii === 0);
         colEl.appendChild(tile.el);
         tiles.push(tile);
@@ -661,10 +720,35 @@
     t.loaded = true;
     if (t.video) {
       if (saveData) return;
-      t.media.preload = 'metadata';
+      // 'auto' (not 'metadata'): this is the actual fix for the stutter —
+      // with 'metadata' the browser only reads the video's duration/size
+      // and doesn't fetch a single frame until play() is called, so the
+      // real buffering used to start exactly on the frame the tile needed
+      // to appear. 'auto' starts that buffering now, while the tile is
+      // still off-screen (see VIDEO_PAD_MULT below for the extra runway).
+      t.media.preload = 'auto';
       t.media.src = t.src;
     } else {
       t.media.src = t.src;
+      // Decode off the main thread ahead of time. Without this the first
+      // paint of a freshly-loaded image decodes synchronously on whichever
+      // frame it happens to scroll into — the same frame that's also moving
+      // five columns — which is the other half of the stutter.
+      if (t.media.decode) t.media.decode().catch(function () {});
+    }
+  }
+
+  // Small screens only: hand the decoded image / video buffer back to the
+  // browser once the tile is well out of the way. It reloads on approach.
+  function unloadTile(t) {
+    if (!t.loaded) return;
+    t.loaded = false;
+    if (t.video) {
+      pauseTile(t);
+      t.media.removeAttribute('src');
+      t.media.load();
+    } else {
+      t.media.removeAttribute('src');
     }
   }
 
@@ -691,6 +775,9 @@
     lastMediaTick = now;
 
     var pad = stageH * PRELOAD_SCREENS;
+    var videoPad = pad * VIDEO_PAD_MULT;
+    var unloadPad = stageH * UNLOAD_SCREENS;
+    var newLoads = 0;
     playable.length = 0;
 
     for (var i = 0; i < cols.length; i++) {
@@ -704,8 +791,21 @@
         var t = c.tiles[j];
         var top = t.top + c.y;
         var bottom = top + t.h;
+        var loadPad = t.video ? videoPad : pad;
 
-        if (nearX && bottom > -pad && top < stageH + pad) loadTile(t);
+        if (nearX && bottom > -loadPad && top < stageH + loadPad) {
+          if (!t.loaded) {
+            // Spread a burst of simultaneous entries (a fast flick past
+            // several tiles at once) across a few ticks instead of kicking
+            // off every decode / video buffer in the same frame.
+            if (newLoads < LOAD_BUDGET) { loadTile(t); newLoads++; }
+          }
+        } else if (lite) {
+          // Wide hysteresis: a tile is only released when it is clearly gone,
+          // so a slow drift never flips it between loaded and unloaded.
+          var farX = right < -stageW || left > stageW * 2;
+          if (farX || bottom < -unloadPad || top > stageH + unloadPad) unloadTile(t);
+        }
 
         if (t.video) {
           if (onX && state.active && !document.hidden && bottom > 0 && top < stageH) {

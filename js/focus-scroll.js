@@ -63,7 +63,10 @@
   }
 
   /* ---------------------------- Tunables ---------------------------- */
-  var SMOOTH_MS = 120;        // follow-smoothing time constant (higher = floatier)
+  // Follow-smoothing time constant (higher = floatier). On a touch screen the
+  // finger IS the scrubber, so a long constant reads as the wall lagging behind
+  // the finger rather than as smoothness: keep it short there.
+  var SMOOTH_MS = window.matchMedia('(hover: none), (pointer: coarse)').matches ? 60 : 120;
 
   var GLOW_START = 0.03;      // wide glow starts fading in
   var GLOW_FULL = 0.55;       // ...and reaches full strength
