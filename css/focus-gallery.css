@@ -1,0 +1,356 @@
+/*
+ * Focus gallery — the second half of the Focus Scroll experience.
+ *
+ * This is NOT a separate section. It lives inside the same sticky, full-viewport
+ * green stage as the statement (see #focusGallery in index.html), so there is no
+ * boundary to cross: the media simply rises out of the green that is already there.
+ *
+ * Scroll phases (all sized on .focus-scroll, driven by js/focus-scroll.js):
+ *   --focus-scroll-distance   glow + statement              (focus-scroll.css)
+ *   --focus-rise-distance     media rises from below        (this file)
+ *   --focus-hold-distance     travelling up through the wall (this file)
+ *
+ * The hold distance below is only a starting value: js/focus-gallery.js measures
+ * how far the columns actually have to travel and rewrites it on #focusScroll, so
+ * the wall keeps the same pace on any screen. Clamped to 4–9 viewport heights.
+ *
+ * Layout: five columns sit side by side on one track that is wider than the
+ * screen. Columns 2–4 fill the viewport, columns 1 and 5 hang off each edge and
+ * are revealed by the mouse. Nothing here is interactive, so the whole gallery
+ * stays pointer-events: none and never interferes with scrolling.
+ *
+ * Tuning:
+ *   --fg-col-w   width of one column       --fg-gap     gap between columns / tiles
+ *   --fg-radius  tile corner radius        --fg-tail    slack below the last tile
+ * Per column (set from the JS config):
+ *   --fg-w       width multiplier          --fg-y       start offset below the header
+ */
+
+.focus-scroll {
+  --focus-rise-distance: 230vh;
+  --focus-hold-distance: 650vh;   /* re-tuned at runtime from the measured travel */
+}
+
+@media (max-width: 780px) {
+  .focus-scroll {
+    --focus-rise-distance: 190vh;
+    --focus-hold-distance: 520vh;
+  }
+}
+
+.focus-gallery {
+  --fg-col-w: clamp(220px, 32vw, 600px);
+  --fg-gap: clamp(0.6rem, 1.2vw, 1.4rem);
+  --fg-radius: clamp(10px, 1.1vw, 18px);
+  --fg-tail: 26vh;
+
+  position: absolute;
+  inset: 0;
+  z-index: 2;                 /* above the statement, inside the same stage */
+  overflow: hidden;           /* the wall is wider than the page: never scroll it */
+  pointer-events: none;       /* purely cinematic — scrolling always wins */
+  /* Must be LTR even on the Arabic page: in RTL the wall would anchor to the
+     right edge and spill off to the left, leaving the stage empty. */
+  direction: ltr;
+}
+
+/* ---- The wall: five columns on one centred, over-wide track ---- */
+
+.focus-gallery .fg-track {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fg-gap);
+  width: max-content;
+  transform: translate3d(-50%, 0, 0);
+  direction: ltr;
+}
+
+.focus-scroll.is-active .fg-track,
+.focus-scroll.is-active .fg-col {
+  will-change: transform;
+}
+
+.fg-col {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--fg-gap);
+  width: calc(var(--fg-col-w) * var(--fg-w, 1));
+  margin-top: calc(var(--header-h, 84px) + var(--fg-y, 0vh));
+  /* Slack under the last tile so the parallax drift never exposes an empty end. */
+  padding-bottom: var(--fg-tail);
+}
+
+/* Before the script runs, the columns wait below the stage so nothing flashes
+   into place on a fast scroll. */
+.focus-scroll:not(.is-static) .fg-col {
+  transform: translate3d(0, 115vh, 0);
+}
+
+.fg-name {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-inline: 0.15rem;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs, 0.75rem);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 0 1px 14px rgba(0, 96, 68, 0.35);
+}
+
+.fg-name:not(:first-child) {
+  margin-top: calc(var(--fg-gap) * 1.6);
+}
+
+.fg-name i {
+  font-style: normal;
+  opacity: 0.7;
+}
+
+html[dir="rtl"] .fg-name span {
+  direction: rtl;             /* the wall is LTR, but Arabic text still reads RTL */
+}
+
+/* ---- Tiles ---- */
+
+.fg-tile {
+  position: relative;
+  flex: 0 0 auto;
+  aspect-ratio: var(--fg-ar, 4 / 5);
+  margin: 0;
+  transform-origin: 50% 100%;
+}
+
+.fg-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--fg-radius);
+  background: rgba(255, 255, 255, 0.16);   /* soft placeholder while media loads */
+  box-shadow: 0 18px 40px -22px rgba(0, 70, 50, 0.55);
+}
+
+.fg-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ---- Immersive mode: the page chrome steps aside while the wall is on screen.
+        Toggled by js/focus-gallery.js as soon as the media has started rising and
+        removed again at the end of the gallery (or when scrolling back up). ---- */
+
+html.is-focus-immersive .site-header {
+  transform: translate3d(0, -130%, 0);   /* .site-header already animates transform */
+  pointer-events: none;
+}
+
+/* The thin reading bar sits exactly where the header was — take it with it.
+   Delete these two rules if you would rather keep the bar visible. */
+.scroll-progress {
+  transition: width 0.1s linear, opacity var(--t-med, 0.35s);
+}
+
+html.is-focus-immersive .scroll-progress {
+  opacity: 0;
+}
+
+/* ---- Custom cursor: a small dot that tracks the pointer exactly, and a
+        larger ring that eases toward it a beat behind — the classic
+        two-part "premium" cursor, echoing the marquee/showcase cursors
+        elsewhere on the site. Purely decorative, never intercepts input. ----
+   The gallery itself is pointer-events: none, so the system cursor icon is
+   actually decided by whatever sits beneath it — the pinned stage. Hiding it
+   there (rather than on .focus-gallery) is what makes the system arrow
+   actually disappear while our own dot + ring stand in for it. */
+
+.focus-scroll-stage.is-cursor-hidden {
+  cursor: none;
+}
+
+.fg-cursor-dot,
+.fg-cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.fg-cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: #fff;
+  z-index: 4;
+  transition: opacity var(--t-fast);
+}
+
+.fg-cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  z-index: 3;
+  transition: opacity var(--t-fast), width var(--t-fast), height var(--t-fast), border-color var(--t-fast);
+}
+
+.focus-gallery.is-cursor-active .fg-cursor-dot,
+.focus-gallery.is-cursor-active .fg-cursor-ring {
+  opacity: 1;
+}
+
+/* A touch larger and brighter right over a tile, echoing .fg-tile:hover elsewhere. */
+.focus-gallery.is-cursor-over-tile .fg-cursor-ring {
+  width: 52px;
+  height: 52px;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .fg-cursor-dot,
+  .fg-cursor-ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fg-cursor-dot,
+  .fg-cursor-ring {
+    transition: none;
+  }
+}
+
+/* ---- Hint + progress through the gallery ---- */
+
+.fg-hint {
+  position: absolute;
+  bottom: clamp(1rem, 3.2vh, 2rem);
+  left: 50%;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-full, 999px);
+  background: rgba(0, 78, 57, 0.78);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs, 0.75rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+html[dir="rtl"] .fg-hint {
+  direction: rtl;
+}
+
+.fg-hint-touch {
+  display: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .fg-hint-mouse {
+    display: none;
+  }
+
+  .fg-hint-touch {
+    display: inline;
+  }
+}
+
+.fg-progress {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  direction: ltr;
+}
+
+.fg-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---- Tablets: narrower columns, the wall drifts with the scroll instead
+        of following a mouse (see DRIFT in js/focus-gallery.js). ---- */
+
+@media (max-width: 1024px) {
+  .focus-gallery {
+    --fg-col-w: clamp(200px, 38vw, 380px);
+  }
+}
+
+@media (max-width: 780px) {
+  .focus-gallery {
+    --fg-col-w: clamp(150px, 44vw, 300px);
+    --fg-tail: 30vh;
+  }
+
+  .fg-col {
+    margin-top: calc(var(--header-h, 70px) + var(--fg-y, 0vh) * 0.6);
+  }
+}
+
+/* ---- Reduced motion: no scrubbing at all. The wall becomes a normal,
+        static editorial grid inside the green block. ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .focus-gallery {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    overflow: visible;
+    pointer-events: auto;
+  }
+
+  .focus-gallery .fg-track {
+    position: relative;
+    left: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    width: 100%;
+    padding-inline: var(--container-pad);
+    padding-block: var(--space-md);
+    transform: none;
+  }
+
+  .fg-col {
+    width: auto;
+    margin-top: 0;
+    padding-bottom: 0;
+    transform: none !important;
+  }
+
+  .fg-tile {
+    transform: none !important;
+  }
+
+  .fg-hint,
+  .fg-progress {
+    display: none;
+  }
+}

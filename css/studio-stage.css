@@ -1,0 +1,70 @@
+/*
+ * Studio stage — the white section between the focus gallery and the homepage footer.
+ *
+ * The green-to-white change now happens INSIDE the gallery (see css/focus-fade.css and
+ * js/focus-fade.js): the gallery's green background fades to white as you approach the
+ * last images, so this section simply continues that white and hands off to the footer
+ * (same --paper colour, no seam).
+ *
+ * It reserves the tall, centred area where the studio name will go later.
+ *
+ * Tuning:
+ *   --studio-stage-min   minimum height of the section
+ *   --studio-stage-pad   vertical padding inside it
+ */
+
+.studio-stage {
+  --studio-stage-min: clamp(34rem, 105vh, 72rem);
+  --studio-stage-pad: var(--space-2xl);
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: var(--studio-stage-min);
+  padding-block: var(--studio-stage-pad);
+  padding-inline: var(--container-pad);
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@supports (height: 100svh) {
+  .studio-stage {
+    --studio-stage-min: clamp(34rem, 105svh, 72rem);
+  }
+}
+
+/* Centred content area the studio name will occupy. */
+.studio-stage-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: var(--container-max);
+  min-height: calc(var(--studio-stage-min) - var(--studio-stage-pad) * 2);
+  margin-inline: auto;
+}
+
+@media (max-width: 1024px) {
+  .studio-stage {
+    --studio-stage-min: clamp(32rem, 82vh, 58rem);
+    --studio-stage-pad: var(--space-xl);
+  }
+}
+
+@media (max-width: 780px) {
+  .studio-stage {
+    --studio-stage-min: clamp(28rem, 72vh, 46rem);
+    --studio-stage-pad: var(--space-lg);
+  }
+}
+
+@supports (height: 100svh) {
+  @media (max-width: 1024px) {
+    .studio-stage { --studio-stage-min: clamp(32rem, 82svh, 58rem); }
+  }
+  @media (max-width: 780px) {
+    .studio-stage { --studio-stage-min: clamp(28rem, 72svh, 46rem); }
+  }
+}

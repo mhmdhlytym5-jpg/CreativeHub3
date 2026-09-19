@@ -1,0 +1,363 @@
+
+
+@media (max-width: 1024px) {
+  :root {
+    --header-h: 76px;
+  }
+
+  .hero-lead { max-width: 60ch; }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: var(--space-lg);
+  }
+
+  .about-story-grid,
+  .contact-grid,
+  .page-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .project-showcase-stage {
+    aspect-ratio: 16 / 9;
+  }
+
+  .project-list {
+    gap: var(--space-xl);
+  }
+
+  .contact-panel {
+    position: static;
+  }
+
+  .service-detail {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .stats-band {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .tools-band {
+    padding: var(--space-lg) var(--space-md);
+    min-height: calc(clamp(220px, 40vw, 320px) + var(--space-lg) * 3 + 2.5rem);
+  }
+
+}
+
+
+@media (max-width: 900px) {
+  .main-nav,
+  .header-actions .btn,
+  .header-actions::before {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .header-bar {
+    padding: 10px var(--container-pad);
+  }
+
+  
+  .site-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  body {
+    padding-top: var(--header-h);
+  }
+}
+
+@media (min-width: 901px) {
+  .mobile-nav-panel {
+    display: none;
+  }
+}
+
+
+@media (max-width: 780px) {
+  .section { padding-block: var(--space-xl); }
+  .section--tight { padding-block: var(--space-lg); }
+
+  
+  .pf-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .pf-card {
+    grid-column: 1 / -1;
+  }
+
+  .pf-card--lead {
+    min-height: 0;
+  }
+
+  
+  .pf-card--lead.pf-card--wide,
+  .pf-card--lead:not(.pf-card--wide) {
+    aspect-ratio: auto;
+  }
+
+  .pf-card .pf-card-frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-showcase-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  .project-showcase-counter {
+    display: none;
+  }
+
+  .process-step {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+    padding-block: var(--space-md);
+  }
+
+  .cta-band { padding: var(--space-lg) var(--space-md); }
+
+  
+  .service-detail-head {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .service-detail-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .service-detail-icon svg { width: 20px; height: 20px; }
+
+  .service-detail {
+    padding-block: var(--space-lg);
+  }
+
+  .service-detail-includes {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-row { gap: var(--space-md); }
+}
+
+
+@media (max-width: 640px) {
+  :root {
+    --header-h: 70px;
+    /* Mobile decorative-line controls: edit these four values as needed. */
+    --hero-right-line-x: -400px;
+    --hero-right-line-y: 0px;
+    --hero-left-line-x: 250px;
+    --hero-left-line-y: 50px;
+  }
+
+  /* The SVG is cropped more tightly on phones; bring the right-side arcs into view. */
+  .hero-swirl-arc {
+    transform: translate(var(--hero-right-line-x), var(--hero-right-line-y));
+  }
+
+  .hero-swirl-loop {
+    transform: translate(var(--hero-left-line-x), var(--hero-left-line-y));
+  }
+
+  .brand-logo { height: 21px; }
+
+  .team-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  .stats-band { grid-template-columns: 1fr 1fr; }
+
+  .stat-featured-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .stat-featured-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .form-row { grid-template-columns: 1fr; }
+
+  .project-media { aspect-ratio: 4 / 3; }
+
+  .project-showcase-stage { aspect-ratio: 4 / 3; }
+
+  .project-showcase-watch {
+    padding: 0.7rem 1.2rem;
+    font-size: var(--fs-xs);
+  }
+
+  .pw-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pw-swatch {
+    width: 18px;
+    height: 18px;
+  }
+
+  .project-info {
+    flex-wrap: wrap;
+  }
+
+  .project-title {
+    order: 3;
+    flex-basis: 100%;
+    font-size: var(--fs-body);
+    margin-top: 0.3rem;
+  }
+
+  .project-arrow {
+    margin-inline-start: auto;
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-stats { gap: var(--space-md); flex-wrap: wrap; }
+
+  .hero-ctas .btn { flex: 1 1 auto; }
+
+  .cta-band-actions .btn { width: 100%; }
+
+  .cta-band-actions { flex-direction: column; }
+
+  .page-hero-title { max-width: none; }
+
+  .work-title { font-size: 1.15rem; }
+
+  .tools-band::before,
+  .tools-band::after {
+    display: none;
+  }
+
+  .logo-fall-circle--md {
+    width: 52px;
+    height: 52px;
+    padding: 11px;
+  }
+
+  .logo-fall-circle--lg {
+    width: 72px;
+    height: 72px;
+    padding: 14px;
+  }
+
+  .logo-fall-circle--sm {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .pf-modal-topbar {
+    padding: 0.7rem var(--container-pad);
+    gap: var(--space-2xs);
+  }
+
+  .pf-modal-meta { display: none; }
+
+  .pf-modal-nav button {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.65rem;
+  }
+
+  .pf-modal-intro {
+    padding: var(--space-lg) var(--container-pad) var(--space-md);
+  }
+
+  .pf-modal-images {
+    gap: var(--space-2xs);
+    padding-inline: var(--space-sm);
+  }
+
+  .pf-modal-img {
+    border-radius: var(--radius-sm);
+  }
+
+  .pf-modal-bottombar {
+    padding: 0.7rem var(--space-sm);
+  }
+
+  .pf-gallery {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .pf-shot,
+  .pf-shot--full {
+    grid-column: 1 / -1;
+    max-height: 640px;
+  }
+
+  .pf-next-card {
+    aspect-ratio: 4 / 5;
+    min-height: 380px;
+    max-height: 520px;
+  }
+
+  .pf-next-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .pf-next-arrow {
+    width: 46px;
+    height: 46px;
+  }
+
+}
+
+
+@media (max-width: 380px) {
+  .header-bar { padding-left: 16px; }
+
+  .team-grid { grid-template-columns: 1fr; }
+
+  .stats-band { grid-template-columns: 1fr; }
+
+  .footer-grid { grid-template-columns: 1fr; }
+
+  .mobile-nav-link { font-size: 2.1rem; }
+}

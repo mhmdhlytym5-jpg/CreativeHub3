@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem('siteLang') || 'en';
+        var html = document.documentElement;
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        if (lang === 'ar') html.classList.add('i18n-pending');
+      } catch (e) {}
+    })();
+  </script>
+  <style>html.i18n-pending body { visibility: hidden; }</style>
+
+  
+  <script>
+    (function () {
+      try {
+        var navType = 'navigate';
+        var entries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+        if (entries && entries[0]) {
+          navType = entries[0].type;
+        } else if (performance.navigation) {
+          navType = performance.navigation.type === 1 ? 'reload' : 'navigate';
+        }
+
+        if (navType !== 'reload' && sessionStorage.getItem('chSplashSeen')) {
+          document.documentElement.classList.add('loader-seen');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <title>Services | Creative Hub</title>
+  <meta name="description" content="Brand identity, branding, photo editing, and web design & development services from Creative Hub.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Services | Creative Hub">
+  <meta property="og:description" content="Brand identity, branding, photo editing, and web design & development services from Creative Hub.">
+  <meta property="og:image" content="https://creativehubstudio.site/assets/images/logo.png">
+  <meta property="og:url" content="https://creativehubstudio.site/pages/services.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#15121C">
+  <link rel="canonical" href="https://creativehubstudio.site/pages/services.html">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Alexandria:wght@400;600;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+    <span class="page-loader-frame" aria-hidden="true"></span>
+    <div class="page-loader-videos">
+      <video class="page-loader-media" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo2.webm" type="video/webm">
+      </video>
+      <video class="page-loader-media page-loader-media--secondary" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo3.webm" type="video/webm">
+      </video>
+    </div>
+    <span class="page-loader-label" data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span>
+    <span class="page-loader-counter"><span id="pageLoaderCounter">0</span>%</span>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+  <header class="site-header" id="siteHeader">
+    <div class="header-bar">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="Creative Hub logo" class="brand-logo">
+        <h3 class="brand-name">CreativeHub</h3>
+      </a>
+
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="services.html" class="nav-link is-active" data-en="Services" data-ar="الخدمات">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a></li>
+          <li><a href="about.html" class="nav-link" data-en="About" data-ar="من نحن">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" id="langToggle" class="lang-switch" aria-label="Switch language to Arabic">AR</button>
+        <a href="contact.html" class="btn btn-primary btn-sm" data-en="Let's Talk" data-ar="لنتحدث">Let's Talk</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open menu" aria-controls="mobileNavPanel"><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <ul class="mobile-nav-list">
+      <li><a href="../index.html" class="mobile-nav-link"><span data-en="01" data-ar="٠١">01</span> <div data-en="Home" data-ar="الرئيسية">Home</div></a></li>
+      <li><a href="services.html" class="mobile-nav-link is-active"><span data-en="02" data-ar="٠٢">02</span> <div data-en="Services" data-ar="الخدمات">Services</div></a></li>
+      <li><a href="portfolio.html" class="mobile-nav-link"><span data-en="03" data-ar="٠٣">03</span> <div data-en="Portfolio" data-ar="أعمالنا">Portfolio</div></a></li>
+      <li><a href="about.html" class="mobile-nav-link"><span data-en="04" data-ar="٠٤">04</span> <div data-en="About" data-ar="من نحن">About</div></a></li>
+      <li><a href="contact.html" class="mobile-nav-link"><span data-en="05" data-ar="٠٥">05</span> <div data-en="Contact" data-ar="اتصل بنا">Contact</div></a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <div class="page-hero section--tint">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a> <span>/</span> <span class="current" data-en="Services" data-ar="الخدمات">Services</span>
+        </div>
+        <div class="page-hero-grid">
+          <div>
+            <h1 class="page-hero-title" data-en="Capabilities & Expertise." data-ar="القدرات والخبرات.">Capabilities & Expertise.</h1>
+          </div>
+          <div>
+            <p class="page-hero-lead lead" data-en="From identity to launch, we deliver design solutions that solve real problems and elevate brands." data-ar="من الهوية إلى الإطلاق، نقدم حلول تصميم مبتكرة تحل مشاكل حقيقية وترتقي بالعلامات التجارية إلى مستوى آخر.">From identity to launch, we deliver design solutions that solve real problems and elevate brands.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section container">
+      <h2 class="sr-only" data-en="Our Services" data-ar="خدماتنا">Our Services</h2>
+      <div class="services-detail-list">
+        <div class="service-detail reveal">
+          <div class="service-detail-head">
+            <div class="service-detail-icon">✦</div>
+            <div>
+              <h3 data-en="Brand Identity" data-ar="الهوية البصرية">Brand Identity</h3>
+              <p data-en="We design brands that feel, not just look — distinctive identities built on meaning, memory, and a point of view that holds up everywhere it's seen." data-ar="نصمم علامات تجارية تُحسّ، لا تُرى فقط — هويات مميزة مبنية على المعنى والذاكرة، ووجهة نظر واضحة تبقى ثابتة أينما ظهرت.">We design brands that feel, not just look — distinctive identities built on meaning, memory, and a point of view that holds up everywhere it's seen.</p>
+            </div>
+          </div>
+          <ul class="service-detail-includes">
+            <li data-en="Logo Design" data-ar="تصميم الشعارات (اللوجو)">Logo Design</li>
+            <li data-en="Brand Guidelines" data-ar="دليل الهوية البصرية">Brand Guidelines</li>
+            <li data-en="Typography Selection" data-ar="اختيار وتنسيق الخطوط">Typography Selection</li>
+            <li data-en="Stationery Design" data-ar="تصميم المطبوعات والأوراق الرسمية">Stationery Design</li>
+          </ul>
+        </div>
+        <div class="service-detail reveal">
+          <div class="service-detail-head">
+            <div class="service-detail-icon">♦</div>
+            <div>
+              <h3 data-en="Branding" data-ar="بناء العلامة التجارية">Branding</h3>
+              <p data-en="Clear direction. Strong presence. Consistent impact. We shape the strategy and voice behind a brand so every touchpoint says the same thing, on purpose." data-ar="اتجاه واضح. حضور قوي. تأثير ثابت. نصوغ الاستراتيجية والصوت خلف علامتك التجارية بحيث تتحدث كل نقطة تواصل بلغة واحدة، عن قصد.">Clear direction. Strong presence. Consistent impact. We shape the strategy and voice behind a brand so every touchpoint says the same thing, on purpose.</p>
+            </div>
+          </div>
+          <ul class="service-detail-includes">
+            <li data-en="Brand Strategy" data-ar="استراتيجية العلامة التجارية">Brand Strategy</li>
+            <li data-en="Naming" data-ar="تسمية العلامة التجارية">Naming</li>
+            <li data-en="Tone of Voice" data-ar="نبرة الصوت والرسائل">Tone of Voice</li>
+            <li data-en="Market Positioning" data-ar="تموضع السوق">Market Positioning</li>
+          </ul>
+        </div>
+        <div class="service-detail reveal">
+          <div class="service-detail-head">
+            <div class="service-detail-icon">▲</div>
+            <div>
+              <h3 data-en="Photo Editing" data-ar="تحرير الصور">Photo Editing</h3>
+              <p data-en="Clean, polished, and visually elevated. From product shots to campaign imagery, we retouch and refine every frame until it's camera-ready and unmistakably on-brand." data-ar="نظيفة، أنيقة، وبمستوى بصري راقٍ. من صور المنتجات إلى صور الحملات، نُنقّح ونُهذّب كل لقطة حتى تصبح جاهزة للنشر ومطابقة تماماً لهوية علامتك التجارية.">Clean, polished, and visually elevated. From product shots to campaign imagery, we retouch and refine every frame until it's camera-ready and unmistakably on-brand.</p>
+            </div>
+          </div>
+          <ul class="service-detail-includes">
+            <li data-en="Photo Retouching" data-ar="تنقيح الصور">Photo Retouching</li>
+            <li data-en="Color Grading" data-ar="تصحيح وتدرج الألوان">Color Grading</li>
+            <li data-en="Background Removal" data-ar="إزالة الخلفية">Background Removal</li>
+            <li data-en="Product Photo Editing" data-ar="تحرير صور المنتجات">Product Photo Editing</li>
+          </ul>
+        </div>
+        <div class="service-detail reveal">
+          <div class="service-detail-head">
+            <div class="service-detail-icon">●</div>
+            <div>
+              <h3 data-en="Web Design & Development" data-ar="تصميم وتطوير المواقع">Web Design & Development</h3>
+              <p data-en="Modern websites built to impress and perform. We design and build fast, responsive sites that turn visitors into customers — no template shortcuts, no bloated code." data-ar="مواقع عصرية مصممة لتبهر وتُقدّم أداءً حقيقياً. نصمم ونطوّر مواقع سريعة ومتجاوبة تُحوّل الزوار إلى عملاء، دون قوالب جاهزة أو أكواد مثقلة.">Modern websites built to impress and perform. We design and build fast, responsive sites that turn visitors into customers — no template shortcuts, no bloated code.</p>
+            </div>
+          </div>
+          <ul class="service-detail-includes">
+            <li data-en="Responsive Web Design" data-ar="تصميم مواقع متجاوب">Responsive Web Design</li>
+            <li data-en="Front-End Development" data-ar="تطوير الواجهة الأمامية">Front-End Development</li>
+            <li data-en="Performance Optimization" data-ar="تحسين الأداء">Performance Optimization</li>
+            <li data-en="CMS Integration" data-ar="ربط أنظمة إدارة المحتوى">CMS Integration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--ink">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="How We Work" data-ar="كيف نعمل">How We Work</span>
+          <h2 data-en="A clear process, start to finish." data-ar="عملية واضحة من البداية إلى النهاية.">A clear process, start to finish.</h2>
+        </div>
+        <div class="process-list">
+          <div class="process-step reveal">
+            <div class="process-num">01</div>
+            <div class="process-body">
+              <h3 data-en="Discover" data-ar="الاكتشاف">Discover</h3>
+              <p data-en="We start with a deep dive into your brand, audience, and goals before a single pixel is placed." data-ar="نبدأ بغوص عميق في علامتك التجارية وجمهورك وأهدافك قبل رسم أي بكسل.">We start with a deep dive into your brand, audience, and goals before a single pixel is placed.</p>
+            </div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-num">02</div>
+            <div class="process-body">
+              <h3 data-en="Design" data-ar="التصميم">Design</h3>
+              <p data-en="Concepts are explored, refined, and presented with clear rationale at every step." data-ar="نستكشف المفاهيم ونطورها ونقدمها مع مبررات واضحة في كل مرحلة.">Concepts are explored, refined, and presented with clear rationale at every step.</p>
+            </div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-num">03</div>
+            <div class="process-body">
+              <h3 data-en="Build" data-ar="البناء">Build</h3>
+              <p data-en="Approved designs are developed and tested across devices and languages." data-ar="يتم تطوير التصاميم المعتمدة واختبارها عبر مختلف الأجهزة واللغات.">Approved designs are developed and tested across devices and languages.</p>
+            </div>
+          </div>
+          <div class="process-step reveal">
+            <div class="process-num">04</div>
+            <div class="process-body">
+              <h3 data-en="Launch" data-ar="الإطلاق">Launch</h3>
+              <p data-en="We ship, monitor, and stay on hand for the first weeks after launch." data-ar="نطلق العمل ونراقبه، ونبقى متاحين خلال الأسابيع الأولى بعد الإطلاق.">We ship, monitor, and stay on hand for the first weeks after launch.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</span>
+        <h2 data-en="Common questions." data-ar="أسئلة متكررة.">Common questions.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faqAnswer1" id="faqQuestion1">
+            <span data-en="How long does a typical project take?" data-ar="كم تستغرق مدة المشروع عادةً؟">How long does a typical project take?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer" id="faqAnswer1" role="region" aria-labelledby="faqQuestion1">
+            <div class="faq-answer-inner">
+              <p data-en="Most brand identity projects run 2-4 weeks; photo editing and web design & development projects vary based on scope, and we'll give you a clear timeline before kickoff." data-ar="معظم مشاريع الهوية البصرية تستغرق من 2 إلى 4 أسابيع، بينما تختلف مشاريع تحرير الصور وتصميم وتطوير المواقع حسب النطاق، وسنزودك بجدول زمني واضح قبل البدء.">Most brand identity projects run 2-4 weeks; photo editing and web design & development projects vary based on scope, and we'll give you a clear timeline before kickoff.</p>
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faqAnswer2" id="faqQuestion2">
+            <span data-en="Do you work with startups?" data-ar="هل تعملون مع الشركات الناشئة؟">Do you work with startups?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer" id="faqAnswer2" role="region" aria-labelledby="faqQuestion2">
+            <div class="faq-answer-inner">
+              <p data-en="Yes — from early-stage founders to established brands, we scope every engagement to fit the budget and stage of the client." data-ar="نعم، من المؤسسين في المراحل المبكرة إلى العلامات التجارية الراسخة، نحدد نطاق كل مشروع بما يناسب ميزانية العميل ومرحلته.">Yes — from early-stage founders to established brands, we scope every engagement to fit the budget and stage of the client.</p>
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faqAnswer3" id="faqQuestion3">
+            <span data-en="Can you work with our existing brand guidelines?" data-ar="هل يمكنكم العمل ضمن دليل هويتنا الحالي؟">Can you work with our existing brand guidelines?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer" id="faqAnswer3" role="region" aria-labelledby="faqQuestion3">
+            <div class="faq-answer-inner">
+              <p data-en="Absolutely. We're comfortable designing within an established system as well as building a new one from scratch." data-ar="بالتأكيد، نحن مرتاحون للعمل ضمن نظام هوية قائم، كما يمكننا بناء نظام جديد بالكامل من الصفر.">Absolutely. We're comfortable designing within an established system as well as building a new one from scratch.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-brand-name">CreativeHub</h3>
+          <p class="footer-blurb" data-en="Designing digital experiences and bold brand identities that leave a lasting mark." data-ar="نصمم تجارب رقمية وهويات بصرية جريئة تترك أثراً خالداً وتميزك عن المنافسين.">Designing digital experiences and bold brand identities that leave a lasting mark.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Pages" data-ar="الصفحات">Pages</h4>
+          <div class="footer-links">
+            <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+            <a href="services.html" data-en="Services" data-ar="الخدمات">Services</a>
+            <a href="portfolio.html" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Company" data-ar="الشركة">Company</h4>
+          <div class="footer-links">
+            <a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a>
+            <a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Social" data-ar="التواصل">Social</h4>
+          <div class="footer-links">
+            <a href="https://www.instagram.com/creative.huub/" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.behance.net/creativehub455" target="_blank" rel="noopener">Behance</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© <span class="js-year"></span> <span data-en="Creative Hub. All rights reserved." data-ar="كرييتف هب. جميع الحقوق محفوظة.">Creative Hub. All rights reserved.</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

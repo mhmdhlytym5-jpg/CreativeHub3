@@ -1,0 +1,38 @@
+/*
+ * Focus fade — the gallery's green background turns white near the end of the images.
+ *
+ * js/focus-fade.js fades .focus-scroll-bg (the green fill + glows) from 1 to 0 over the
+ * last part of the gallery, and adds .is-bg-white on #focusScroll once the background is
+ * mostly white. The rules below only swap the few white-on-green details (labels,
+ * progress bar, custom cursor) to the site's ink colour so they stay visible on white.
+ * Nothing in css/focus-gallery.css or css/focus-scroll.css is edited.
+ */
+
+.fg-name {
+  transition: color var(--t-med, 0.35s), text-shadow var(--t-med, 0.35s);
+}
+
+.focus-scroll.is-bg-white .fg-name {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.focus-scroll.is-bg-white .fg-progress {
+  background: rgba(var(--ink-rgb), 0.12);
+}
+
+.focus-scroll.is-bg-white .fg-progress-bar {
+  background: var(--ink);
+}
+
+.focus-scroll.is-bg-white .fg-cursor-dot {
+  background: var(--ink);
+}
+
+.focus-scroll.is-bg-white .fg-cursor-ring {
+  border-color: rgba(var(--ink-rgb), 0.5);
+}
+
+.focus-scroll.is-bg-white .focus-gallery.is-cursor-over-tile .fg-cursor-ring {
+  border-color: rgba(var(--ink-rgb), 0.85);
+}

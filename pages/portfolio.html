@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem('siteLang') || 'en';
+        var html = document.documentElement;
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        if (lang === 'ar') html.classList.add('i18n-pending');
+      } catch (e) {}
+    })();
+  </script>
+  <style>html.i18n-pending body { visibility: hidden; }</style>
+
+  
+  <script>
+    (function () {
+      try {
+        var navType = 'navigate';
+        var entries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+        if (entries && entries[0]) {
+          navType = entries[0].type;
+        } else if (performance.navigation) {
+          navType = performance.navigation.type === 1 ? 'reload' : 'navigate';
+        }
+
+        if (navType !== 'reload' && sessionStorage.getItem('chSplashSeen')) {
+          document.documentElement.classList.add('loader-seen');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <title>Portfolio | Creative Hub</title>
+  <meta name="description" content="Selected branding, UI/UX, and packaging work from Creative Hub.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Portfolio | Creative Hub">
+  <meta property="og:description" content="Selected branding, UI/UX, and packaging work from Creative Hub.">
+  <meta property="og:image" content="https://creativehubstudio.site/assets/images/logo.png">
+  <meta property="og:url" content="https://creativehubstudio.site/pages/portfolio.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#15121C">
+  <link rel="canonical" href="https://creativehubstudio.site/pages/portfolio.html">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Alexandria:wght@400;600;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+    <span class="page-loader-frame" aria-hidden="true"></span>
+    <div class="page-loader-videos">
+      <video class="page-loader-media" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo2.webm" type="video/webm">
+      </video>
+      <video class="page-loader-media page-loader-media--secondary" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo3.webm" type="video/webm">
+      </video>
+    </div>
+    <span class="page-loader-label" data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span>
+    <span class="page-loader-counter"><span id="pageLoaderCounter">0</span>%</span>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+  <header class="site-header" id="siteHeader">
+    <div class="header-bar">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="Creative Hub logo" class="brand-logo">
+        <h3 class="brand-name">CreativeHub</h3>
+      </a>
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="services.html" class="nav-link" data-en="Services" data-ar="الخدمات">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link is-active" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a></li>
+          <li><a href="about.html" class="nav-link" data-en="About" data-ar="من نحن">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button type="button" id="langToggle" class="lang-switch" aria-label="Switch language to Arabic">AR</button>
+        <a href="contact.html" class="btn btn-primary btn-sm" data-en="Let's Talk" data-ar="لنتحدث">Let's Talk</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open menu" aria-controls="mobileNavPanel"><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <ul class="mobile-nav-list">
+      <li><a href="../index.html" class="mobile-nav-link"><span data-en="01" data-ar="٠١">01</span> <div data-en="Home" data-ar="الرئيسية">Home</div></a></li>
+      <li><a href="services.html" class="mobile-nav-link"><span data-en="02" data-ar="٠٢">02</span> <div data-en="Services" data-ar="الخدمات">Services</div></a></li>
+      <li><a href="portfolio.html" class="mobile-nav-link is-active"><span data-en="03" data-ar="٠٣">03</span> <div data-en="Portfolio" data-ar="أعمالنا">Portfolio</div></a></li>
+      <li><a href="about.html" class="mobile-nav-link"><span data-en="04" data-ar="٠٤">04</span> <div data-en="About" data-ar="من نحن">About</div></a></li>
+      <li><a href="contact.html" class="mobile-nav-link"><span data-en="05" data-ar="٠٥">05</span> <div data-en="Contact" data-ar="اتصل بنا">Contact</div></a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <div class="page-hero page-hero--work section--ink">
+      <div class="pf-hero-aura" aria-hidden="true"></div>
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a> <span>/</span> <span class="current" data-en="Portfolio" data-ar="أعمالنا">Portfolio</span>
+        </div>
+        <div class="page-hero-stack">
+          <span class="eyebrow" data-en="Selected Works" data-ar="أعمال مختارة">Selected Works</span>
+          <h1 class="page-hero-title" id="pfHeroWords" data-en="Work we'd show a stranger." data-ar="أعمال نفخر بعرضها عليك.">Work we'd show a stranger.</h1>
+          <p class="page-hero-lead lead" data-en="Selected work across branding, product and packaging — where every colour, curve and word was a decision, not a guess." data-ar="أعمال مختارة في الهوية البصرية حيث كل لون وكل خط وكل كلمة كانت قراراً، لا مجرد تخمين.">Selected work across branding, product and packaging — where every colour, curve and word was a decision, not a guess.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="section section--work container">
+      
+      <div class="pf-grid reveal-stagger" id="pfGrid"></div>
+    </section>
+  </main>
+
+  
+  <div class="pf-modal" id="pfModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pfHeroTitle">
+
+    <header class="pf-bar">
+      <button type="button" class="pf-bar-close" id="pfClose" aria-label="Close case study">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span class="sr-only" data-en="Close" data-ar="إغلاق">Close</span>
+      </button>
+
+      <div class="pf-bar-meta">
+        <span class="pf-bar-cat" id="pfBarCat"></span>
+        <span class="pf-bar-title" id="pfBarTitle"></span>
+      </div>
+
+      <div class="pf-bar-nav">
+        <span class="pf-bar-counter" id="pfCounter"></span>
+        <button type="button" class="pf-bar-arrow" id="pfPrev" aria-label="Previous project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button type="button" class="pf-bar-arrow" id="pfNextBtn" aria-label="Next project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <span class="pf-bar-progress" id="pfModalProgress" aria-hidden="true"></span>
+    </header>
+
+    <div class="pf-modal-scroll" id="pfModalScroll">
+
+      <section class="pf-hero" id="pfHero">
+        <img class="pf-hero-img" id="pfHeroImg" alt="">
+        <div class="pf-hero-scrim" aria-hidden="true"></div>
+        <div class="pf-hero-inner container">
+          <div class="pf-hero-tags">
+            <span class="pf-hero-cat" id="pfHeroCat"></span>
+          </div>
+          <h2 class="pf-hero-title" id="pfHeroTitle"></h2>
+        </div>
+        <span class="pf-hero-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        </span>
+      </section>
+
+      <section class="pf-body container">
+        <div class="pf-body-main">
+          <p class="pf-body-lead" id="pfLead"></p>
+          <p class="pf-body-desc" id="pfDesc"></p>
+        </div>
+        <aside class="pf-body-rail">
+          <dl class="pf-meta" id="pfMeta"></dl>
+        </aside>
+      </section>
+
+      <div class="pf-gallery" id="pfGallery"></div>
+
+      <div class="pf-next-wrap container" id="pfNext"></div>
+    </div>
+
+    <button type="button" class="pf-to-top" id="pfTop" aria-label="Back to top of case study">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-brand-name">CreativeHub</h3>
+          <p class="footer-blurb" data-en="Designing digital experiences and bold brand identities that leave a lasting mark." data-ar="نصمم تجارب رقمية وهويات بصرية جريئة تترك أثراً خالداً وتميزك عن المنافسين.">Designing digital experiences and bold brand identities that leave a lasting mark.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Pages" data-ar="الصفحات">Pages</h4>
+          <div class="footer-links">
+            <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+            <a href="services.html" data-en="Services" data-ar="الخدمات">Services</a>
+            <a href="portfolio.html" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Company" data-ar="الشركة">Company</h4>
+          <div class="footer-links">
+            <a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a>
+            <a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Social" data-ar="التواصل">Social</h4>
+          <div class="footer-links">
+            <a href="https://www.instagram.com/creative.huub/" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.behance.net/creativehub455" target="_blank" rel="noopener">Behance</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© <span class="js-year"></span> <span data-en="Creative Hub. All rights reserved." data-ar="كرييتف هب. جميع الحقوق محفوظة.">Creative Hub. All rights reserved.</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <script src="../js/navbar.js"></script>
+  <script src="../js/portfolio.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/word-hover.js"></script>
+</body>
+</html>

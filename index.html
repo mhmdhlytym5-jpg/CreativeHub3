@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem('siteLang') || 'en';
+        var html = document.documentElement;
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        if (lang === 'ar') html.classList.add('i18n-pending');
+      } catch (e) {}
+    })();
+  </script>
+  <style>html.i18n-pending body { visibility: hidden; }</style>
+
+  
+  <script>
+    (function () {
+      try {
+        var navType = 'navigate';
+        var entries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+        if (entries && entries[0]) {
+          navType = entries[0].type;
+        } else if (performance.navigation) {
+          navType = performance.navigation.type === 1 ? 'reload' : 'navigate';
+        }
+
+        if (navType !== 'reload' && sessionStorage.getItem('chSplashSeen')) {
+          document.documentElement.classList.add('loader-seen');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <title>Creative Hub | Graphic Design Agency</title>
+  <meta name="description" content="Creative Hub is an independent design agency crafting bold brand identities, polished photography, and modern websites for visionary brands.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Creative Hub | Graphic Design Agency">
+  <meta property="og:description" content="Elevate your brand with identity design, branding, photo editing, and web design & development.">
+  <meta property="og:image" content="https://creativehubstudio.site/assets/images/logo.png">
+  <meta property="og:url" content="https://creativehubstudio.site/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#15121C">
+  <link rel="canonical" href="https://creativehubstudio.site/">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Alexandria:wght@400;600;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/focus-scroll.css">
+  <link rel="stylesheet" href="css/focus-gallery.css">
+  <link rel="stylesheet" href="css/studio-stage.css">
+  <link rel="stylesheet" href="css/focus-fade.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/statement.css">
+  <link rel="stylesheet" href="css/dotfield.css">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Creative Hub",
+    "description": "Independent design agency crafting bold brand identities, branding, photo editing, and web design & development.",
+    "url": "https://creativehubstudio.site/",
+    "logo": "https://creativehubstudio.site/assets/images/logo.png",
+    "sameAs": [
+      "https://www.instagram.com/creative.huub/",
+      "https://www.behance.net/creativehub455"
+    ]
+  }
+  </script>
+</head>
+<body id="top">
+  <div class="page-loader" id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+    <span class="page-loader-frame" aria-hidden="true"></span>
+    <div class="page-loader-videos">
+      <video class="page-loader-media" autoplay muted loop playsinline aria-hidden="true">
+        <source src="assets/videos/logo2.webm" type="video/webm">
+      </video>
+      <video class="page-loader-media page-loader-media--secondary" autoplay muted loop playsinline aria-hidden="true">
+        <source src="assets/videos/logo3.webm" type="video/webm">
+      </video>
+    </div>
+    <span class="page-loader-label" data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span>
+    <span class="page-loader-counter"><span id="pageLoaderCounter">0</span>%</span>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="header-bar">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.png" alt="Creative Hub logo" class="brand-logo">
+        <h3 class="brand-name">CreativeHub</h3>
+      </a>
+
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="pages/services.html" class="nav-link" data-en="Services" data-ar="الخدمات">Services</a></li>
+          <li><a href="pages/portfolio.html" class="nav-link" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a></li>
+          <li><a href="pages/about.html" class="nav-link" data-en="About" data-ar="من نحن">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" id="langToggle" class="lang-switch" aria-label="Switch language to Arabic">AR</button>
+        <a href="pages/contact.html" class="btn btn-primary btn-sm" data-en="Let's Talk" data-ar="لنتحدث">Let's Talk</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open menu" aria-controls="mobileNavPanel">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <ul class="mobile-nav-list">
+      <li><a href="index.html" class="mobile-nav-link"><span data-en="01" data-ar="٠١">01</span> <div data-en="Home" data-ar="الرئيسية">Home</div></a></li>
+      <li><a href="pages/services.html" class="mobile-nav-link"><span data-en="02" data-ar="٠٢">02</span> <div data-en="Services" data-ar="الخدمات">Services</div></a></li>
+      <li><a href="pages/portfolio.html" class="mobile-nav-link"><span data-en="03" data-ar="٠٣">03</span> <div data-en="Portfolio" data-ar="أعمالنا">Portfolio</div></a></li>
+      <li><a href="pages/about.html" class="mobile-nav-link"><span data-en="04" data-ar="٠٤">04</span> <div data-en="About" data-ar="من نحن">About</div></a></li>
+      <li><a href="pages/contact.html" class="mobile-nav-link"><span data-en="05" data-ar="٠٥">05</span> <div data-en="Contact" data-ar="اتصل بنا">Contact</div></a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <section class="hero">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="hero-swirl" aria-hidden="true">
+        <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <path class="hero-swirl-arc hero-swirl-arc--thin" d="M 1290,480 C 1180,390 1160,210 1030,-65" />
+          <path class="hero-swirl-arc" d="M 1335,515 C 1200,410 1185,190 1070,-75" />
+          <path class="hero-swirl-loop hero-swirl-loop--thin" d="M -100,680 C 60,610 120,480 270,455 C 460,427 545,555 405,615 C 265,672 130,600 165,515 C 198,428 240,355 210,245 C 183,150 125,75 75,-10" />
+          <path class="hero-swirl-loop" d="M -100,650 C 40,590 90,460 240,430 C 420,395 500,530 360,595 C 230,655 100,580 140,490 C 175,400 220,330 190,220 C 165,130 110,60 60,-20" />
+        </svg>
+      </div>
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="hero-eyebrow eyebrow" data-en="Design That Speaks" data-ar="تصميم يتحدث عنك">Design That Speaks</span>
+            <h1 class="hero-title">
+              <span class="hero-weave" id="heroWeave"><svg class="hero-weave-svg hero-weave-svg--back" aria-hidden="true" focusable="false"></svg><span class="hero-weave-text" data-en="We craft bold" data-ar="نبتكر لك">We craft bold</span><svg class="hero-weave-svg hero-weave-svg--front" aria-hidden="true" focusable="false"></svg></span>
+              <br>
+              <span class="txt-rotate" id="rotatingText" data-en="brand worlds." data-ar="علامات جريئة.">brand worlds.</span>
+            </h1>
+            <p class="hero-lead" data-en="Elevate your brand with striking identity design, sharp branding, polished photo editing, and websites built to perform." data-ar="ارتقِ بعلامتك التجارية من خلال هوية بصرية لافتة، وبناء علامة تجارية واضح، وتحرير صور احترافي، ومواقع إلكترونية مصممة لتؤدي بأفضل شكل.">Elevate your brand with striking identity design, sharp branding, polished photo editing, and websites built to perform.</p>
+            <div class="hero-ctas">
+              <a href="pages/portfolio.html" class="btn btn-mint">
+                <span data-en="View Our Work" data-ar="شاهد أعمالنا">View Our Work</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+              <a href="pages/contact.html" class="btn btn-outline" data-en="Get in Touch" data-ar="تواصل معنا">Get in Touch</a>
+            </div>
+            <div class="hero-stats stat-row">
+              <div>
+                <span class="stat-num" data-count="50" data-suffix="+">0</span>
+                <span class="stat-label" data-en="Projects Delivered" data-ar="مشروع مُنجز">Projects Delivered</span>
+              </div>
+              <div>
+                <span class="stat-num" data-count="40" data-suffix="K+">0</span>
+                <span class="stat-label" data-en="Followers" data-ar="متابع">Followers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item" data-en="Brand Identity" data-ar="الهوية البصرية">Brand Identity</span>
+        <span class="marquee-item" data-en="Branding" data-ar="بناء العلامة التجارية">Branding</span>
+        <span class="marquee-item" data-en="Photo Editing" data-ar="تحرير الصور">Photo Editing</span>
+        <span class="marquee-item" data-en="Web Design & Development" data-ar="تصميم وتطوير المواقع">Web Design & Development</span>
+
+        <span class="marquee-item" data-en="Brand Identity" data-ar="الهوية البصرية" aria-hidden="true">Brand Identity</span>
+        <span class="marquee-item" data-en="Branding" data-ar="بناء العلامة التجارية" aria-hidden="true">Branding</span>
+        <span class="marquee-item" data-en="Photo Editing" data-ar="تحرير الصور" aria-hidden="true">Photo Editing</span>
+        <span class="marquee-item" data-en="Web Design & Development" data-ar="تصميم وتطوير المواقع" aria-hidden="true">Web Design & Development</span>
+      </div>
+    </div>
+
+    <section class="section section--tight">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="What We Do" data-ar="ماذا نقدم">What We Do</span>
+          <h2 data-en="Capabilities built for modern brands." data-ar="قدرات مصممة للعلامات التجارية العصرية.">Capabilities built for modern brands.</h2>
+        </div>
+        <div class="services-grid reveal-stagger">
+          <div class="service-card">
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">✦</div>
+            </div>
+            <h3 class="service-title" data-en="Brand Identity" data-ar="الهوية البصرية">Brand Identity</h3>
+            <p class="service-desc" data-en="We design brands that feel, not just look." data-ar="نصمم علامات تجارية تُحسّ، لا تُرى فقط.">We design brands that feel, not just look.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">◆</div>
+            </div>
+            <h3 class="service-title" data-en="Branding" data-ar="بناء العلامة التجارية">Branding</h3>
+            <p class="service-desc" data-en="Clear direction. Strong presence. Consistent impact." data-ar="اتجاه واضح. حضور قوي. تأثير ثابت.">Clear direction. Strong presence. Consistent impact.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">▲</div>
+            </div>
+            <h3 class="service-title" data-en="Photo Editing" data-ar="تحرير الصور">Photo Editing</h3>
+            <p class="service-desc" data-en="Clean, polished, and visually elevated." data-ar="نظيفة، أنيقة، وبمستوى بصري راقٍ.">Clean, polished, and visually elevated.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">●</div>
+            </div>
+            <h3 class="service-title" data-en="Web Design & Development" data-ar="تصميم وتطوير المواقع">Web Design & Development</h3>
+            <p class="service-desc" data-en="Modern websites built to impress and perform." data-ar="مواقع عصرية مصممة لتبهر وتُقدّم أداءً حقيقياً.">Modern websites built to impress and perform.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects-section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="Selected Works" data-ar="أعمال مختارة">Selected Works</span>
+          <h2 data-en="Our latest creative endeavors." data-ar="نظرة على أحدث إبداعاتنا الفنية.">Our latest creative endeavors.</h2>
+        </div>
+
+        <div class="project-showcase reveal" id="projectShowcase">
+          <div class="project-showcase-head">
+            <div>
+              <span class="project-showcase-tag" id="pwTag" data-en="Brand Identity" data-ar="هوية بصرية">Brand Identity</span>
+              <h3 class="project-showcase-title" id="pwTitle" data-en="NAWA Arabic Coffee" data-ar="قهوة نوى العربية">NAWA Arabic Coffee</h3>
+            </div>
+            <span class="project-showcase-counter" aria-hidden="true"><span id="pwCurrent">01</span> / <span id="pwTotal">03</span></span>
+          </div>
+
+          <div class="project-showcase-stage">
+            <div class="project-showcase-track" id="pwTrack">
+              <a href="pages/portfolio.html" class="project-showcase-slide" data-tag-en="Brand Identity" data-tag-ar="هوية بصرية" data-title-en="NAWA Arabic Coffee" data-title-ar="قهوة نوى العربية">
+                <img class="project-showcase-img" src="assets/images/NAWA.webp" alt="NAWA Arabic Coffee" loading="lazy">
+              </a>
+              <a href="pages/portfolio.html" class="project-showcase-slide" data-tag-en="Brand Identity" data-tag-ar="هوية بصرية" data-title-en="Narjes" data-title-ar="نرجس">
+                <img class="project-showcase-img" src="assets/images/NARJES.webp" alt="Narjes" loading="lazy">
+              </a>
+              <a href="pages/portfolio.html" class="project-showcase-slide" data-tag-en="Brand Identity" data-tag-ar="هوية بصرية" data-title-en="Rukna" data-title-ar="ركنة">
+                <img class="project-showcase-img" src="assets/images/RUKNA.webp" alt="Rukna" loading="lazy">
+              </a>
+            </div>
+
+            <div class="project-showcase-swatches" aria-hidden="true">
+              <span class="pw-swatch pw-swatch--mint"></span>
+              <span class="pw-swatch pw-swatch--violet"></span>
+            </div>
+
+            <div class="project-showcase-dots" id="pwDots" role="tablist" aria-label="Project slides">
+              <button type="button" class="pw-dot is-active" aria-label="1" aria-selected="true"></button>
+              <button type="button" class="pw-dot" aria-label="2" aria-selected="false"></button>
+              <button type="button" class="pw-dot" aria-label="3" aria-selected="false"></button>
+            </div>
+
+            <a href="pages/portfolio.html" class="btn btn-mint project-showcase-watch">
+              <span data-en="Watch" data-ar="شاهد">Watch</span>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+            </a>
+
+            <div class="project-showcase-nav">
+              <button type="button" class="pw-arrow pw-prev" id="pwPrev" aria-label="Previous project">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button type="button" class="pw-arrow pw-next" id="pwNext" aria-label="Next project">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-marquee reveal" aria-label="More of our projects">
+          <div class="project-marquee-row">
+            <div class="project-marquee-track project-marquee-track--reverse">
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide"><img src="assets/images/NAWA.webp" alt="NAWA Arabic Coffee" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait"><img src="assets/images/NARJES.webp" alt="Narjes" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-square"><img src="assets/images/RUKNA.webp" alt="Rukna" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide"><img src="assets/images/3SIPS.webp" alt="3Sips" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait"><img src="assets/images/AERIS.webp" alt="Aeris" loading="lazy"></a>
+
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide" aria-hidden="true" tabindex="-1"><img src="assets/images/NAWA.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait" aria-hidden="true" tabindex="-1"><img src="assets/images/NARJES.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-square" aria-hidden="true" tabindex="-1"><img src="assets/images/RUKNA.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide" aria-hidden="true" tabindex="-1"><img src="assets/images/3SIPS.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait" aria-hidden="true" tabindex="-1"><img src="assets/images/AERIS.webp" alt="" loading="lazy"></a>
+            </div>
+          </div>
+          <div class="project-marquee-row">
+            <div class="project-marquee-track">
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide"><img src="assets/images/CROSSA.webp" alt="Crossa" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-square"><img src="assets/images/tunay/tunay-01.webp" alt="Tunay" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait"><img src="assets/images/zetso/zetso.webp" alt="Zetso" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide"><img src="assets/images/alavxa/alavxa-11.webp" alt="Alavxa" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait"><img src="assets/images/NAWA.webp" alt="NAWA Arabic Coffee" loading="lazy"></a>
+
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide" aria-hidden="true" tabindex="-1"><img src="assets/images/CROSSA.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-square" aria-hidden="true" tabindex="-1"><img src="assets/images/tunay/tunay-01.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait" aria-hidden="true" tabindex="-1"><img src="assets/images/zetso/zetso.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-wide" aria-hidden="true" tabindex="-1"><img src="assets/images/alavxa/alavxa-11.webp" alt="" loading="lazy"></a>
+              <a href="pages/portfolio.html" class="project-marquee-item is-portrait" aria-hidden="true" tabindex="-1"><img src="assets/images/NAWA.webp" alt="" loading="lazy"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight section--video-adjacent">
+      <div class="container">
+        <div class="tools-band reveal">
+          <div class="tools-band-marquee marquee marquee--on-mint">
+            <div class="marquee-track">
+              <span class="marquee-item" data-en="We Create Art" data-ar="نصنع فناً">We Create Art</span>
+              <span class="marquee-item" data-en="We Design Brands" data-ar="نصمم علامات">We Design Brands</span>
+              <span class="marquee-item" data-en="We Craft Visions" data-ar="نبتكر رؤى">We Craft Visions</span>
+              <span class="marquee-item" data-en="We Build Ideas" data-ar="نبني أفكاراً">We Build Ideas</span>
+              <span class="marquee-item" data-en="We Create Art" data-ar="نصنع فناً" aria-hidden="true">We Create Art</span>
+              <span class="marquee-item" data-en="We Design Brands" data-ar="نصمم علامات" aria-hidden="true">We Design Brands</span>
+              <span class="marquee-item" data-en="We Craft Visions" data-ar="نبتكر رؤى" aria-hidden="true">We Craft Visions</span>
+              <span class="marquee-item" data-en="We Build Ideas" data-ar="نبني أفكاراً" aria-hidden="true">We Build Ideas</span>
+            </div>
+          </div>
+          <div class="tools-band-stage" id="logoFallStage">
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="65" data-delay="0" data-start-y="0">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="71" data-delay="120" data-start-y="60">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="78" data-delay="40" data-start-y="10">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="84" data-delay="200" data-start-y="90">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="90" data-delay="320" data-start-y="30">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="68" data-delay="90" data-start-y="0">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="75" data-delay="430" data-start-y="70">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="82" data-delay="60" data-start-y="20">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="88" data-delay="500" data-start-y="45">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+            <div class="logo-fall-circle logo-fall-circle--md" data-start-x="94" data-delay="260" data-start-y="100">
+              <img src="assets/images/logo.png" alt="Creative Hub logo" class="logo-fall-img">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus-scroll" id="focusScroll">
+      <div class="focus-scroll-stage">
+        <div class="focus-scroll-bg" aria-hidden="true">
+          <div class="focus-fill"></div>
+          <div class="focus-glow focus-glow--wide"></div>
+          <div class="focus-glow focus-glow--core"></div>
+        </div>
+        <p class="focus-text">
+          <span class="focus-line" data-en="We keep our" data-ar="نُبقي تركيزنا">We keep our</span>
+          <span class="focus-line" data-en="focus on" data-ar="دائماً على">focus on</span>
+          <span class="focus-line"><span class="focus-accent" data-en="important things" data-ar="الأشياء المهمة">important things</span></span>
+        </p>
+
+        <!-- Gallery: same pinned green stage as the statement, so the media rises out of
+             the green with no boundary. Driven by js/focus-gallery.js (see css/focus-gallery.css). -->
+        <div class="focus-gallery" id="focusGallery" role="region" aria-label="Selected work" data-no-logo-drop>
+          <!-- The five columns are built from the MEDIA config at the top of
+               js/focus-gallery.js — edit that block to change the wall. -->
+          <div class="fg-track" id="fgTrack"></div>
+
+          <p class="fg-hint" aria-hidden="true">
+            <span class="fg-hint-mouse" data-en="Keep scrolling — move your mouse to reveal more" data-ar="واصل التمرير — حرّك المؤشر لكشف المزيد">Keep scrolling — move your mouse to reveal more</span>
+            <span class="fg-hint-touch" data-en="Keep scrolling" data-ar="واصل التمرير">Keep scrolling</span>
+          </p>
+          <div class="fg-progress" aria-hidden="true"><span class="fg-progress-bar"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial statement: sits directly below the gallery images.
+         Characters (words in Arabic) are split into spans by js/statement.js and animated by SCROLL POSITION; styles in css/statement.css.
+         Copy for both languages lives in the data-st-en / data-st-ar attributes (*word* = emphasised). -->
+    <section class="statement" id="statement">
+      <div class="statement-inner">
+        <p class="statement-text" id="statementText" data-st-en="Let’s build *something* together." data-st-ar="لنبنِ *شيئاً* معاً.">Let’s build <em>something</em> together.</p>
+      </div>
+    </section>
+
+    <!-- Studio stage: dedicated transition between the gallery and the footer.
+         White section between the gallery and the footer. It now holds the dot-field + contact frame (css/dotfield.css). Base styles: css/studio-stage.css -->
+    <section class="studio-stage studio-stage--dotfield" id="studioStage">
+      <div class="studio-stage-inner">
+        <!-- Dot field + contact: one large dark frame. The dot grid is drawn on the canvas by
+             js/dotfield.js; the form and contact details are the contact page's content
+             (same ids and field names, so js/main.js submits the form and shows the same
+             messages). Styles: css/dotfield.css. data-no-logo-drop stops the click-logo
+             effect from firing on it. -->
+        <div class="dotfield-stage" id="dotfieldStage" data-no-logo-drop>
+          <canvas class="dotfield-canvas" id="dotfieldCanvas" aria-hidden="true"></canvas>
+
+          <div class="dotfield-content">
+            <form class="df-form" id="contactForm" action="https://formspree.io/f/xkjwjjdv" method="POST">
+              <div class="df-row">
+                <div class="df-field">
+                  <label class="df-label" for="contactName" data-en="Name" data-ar="الاسم">Name</label>
+                  <input type="text" id="contactName" name="name" class="df-input" autocomplete="name" required>
+                </div>
+                <div class="df-field">
+                  <label class="df-label" for="contactEmail" data-en="Email" data-ar="البريد الإلكتروني">Email</label>
+                  <input type="email" id="contactEmail" name="email" class="df-input" autocomplete="email" required>
+                </div>
+              </div>
+              <div class="df-field">
+                <label class="df-label" for="contactService" data-en="Service Needed" data-ar="الخدمة المطلوبة">Service Needed</label>
+                <select class="df-select" id="contactService" name="service">
+                  <option value="brand-identity" data-en="Brand Identity" data-ar="الهوية البصرية">Brand Identity</option>
+                  <option value="branding" data-en="Branding" data-ar="بناء العلامة التجارية">Branding</option>
+                  <option value="photo-editing" data-en="Photo Editing" data-ar="تحرير الصور">Photo Editing</option>
+                  <option value="web-design-dev" data-en="Web Design & Development" data-ar="تصميم وتطوير المواقع">Web Design & Development</option>
+                  <option value="other" data-en="Other" data-ar="خدمات أخرى">Other</option>
+                </select>
+              </div>
+              <div class="df-field">
+                <label class="df-label" for="contactMessage" data-en="Message" data-ar="رسالتك">Message</label>
+                <textarea id="contactMessage" name="message" class="df-textarea" required></textarea>
+              </div>
+              <button type="submit" class="df-submit" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
+              <div id="formStatus" class="df-status" role="status" aria-live="polite" data-en="Message sent successfully!" data-ar="تم إرسال الرسالة بنجاح!">Message sent successfully!</div>
+              <div id="formStatusError" class="df-status df-status--error" role="status" aria-live="polite" data-en="Something went wrong. Please try again or email us directly." data-ar="حدث خطأ ما. حاول مرة أخرى أو راسلنا مباشرة عبر البريد الإلكتروني.">Something went wrong. Please try again or email us directly.</div>
+            </form>
+
+            <aside class="df-info">
+              <h3 class="df-info-title" data-en="Contact Info" data-ar="معلومات التواصل">Contact Info</h3>
+              <p class="df-info-text" data-en="Prefer direct email? Reach out anytime." data-ar="تفضل المراسلة المباشرة عبر الإيميل؟ تواصل معنا في أي وقت.">Prefer direct email? Reach out anytime.</p>
+              <a class="df-info-link" href="mailto:creativehub.projects@gmail.com">creativehub.projects@gmail.com</a>
+              <a class="df-info-link" href="https://www.instagram.com/creative.huub/" target="_blank" rel="noopener">Instagram</a>
+              <a class="df-info-link" href="https://www.behance.net/creativehub455" target="_blank" rel="noopener">Behance</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="home-footer">
+    <div class="home-footer-shell">
+      <div class="home-footer-meta">
+        <span data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span>
+        <i aria-hidden="true"></i>
+        <span class="js-year"></span>
+      </div>
+
+      <div class="home-footer-stage">
+        <div class="home-footer-glow" aria-hidden="true"></div>
+        <div class="home-footer-content">
+          <nav aria-label="Footer links">
+            <ul class="home-footer-links">
+              <li><a href="https://www.instagram.com/creative.huub/" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg><span data-en="Instagram" data-ar="إنستغرام">Instagram</span></a></li>
+              <li><a href="https://www.behance.net/creativehub455" target="_blank" rel="noopener"><strong aria-hidden="true">Bē</strong><span data-en="Behance" data-ar="بيهانس">Behance</span></a></li>
+              <li><a href="pages/contact.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg><span data-en="Email" data-ar="البريد الإلكتروني">Email</span></a></li>
+              <li><a class="home-footer-return" href="#top"><b aria-hidden="true">↑</b><span data-en="Back to top" data-ar="العودة للأعلى">Back to top</span></a></li>
+            </ul>
+          </nav>
+        </div>
+        <p class="home-footer-mark" aria-label="Creative Hub"><span data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/project-showcase.js"></script>
+  <script src="js/marquee-cursor.js"></script>
+  <script src="js/logo-fall.js"></script>
+  <script src="js/logo-drop.js"></script>
+  <script src="js/hero-weave.js"></script>
+  <script src="js/focus-scroll.js"></script>
+  <script src="js/focus-gallery.js"></script>
+  <script src="js/focus-fade.js"></script>
+  <script src="js/statement.js"></script>
+  <script src="js/dotfield.js"></script>
+  <script src="js/footer-rise.js"></script>
+  <script src="js/main.js"></script>
+
+  </body>
+</html>

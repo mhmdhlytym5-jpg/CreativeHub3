@@ -1,0 +1,206 @@
+/*
+ * Focus scroll section — scroll-scrubbed green glow + statement.
+ *
+ * Layout: a tall track (.focus-scroll) holds a sticky, full-viewport stage.
+ * While the stage is pinned, js/focus-scroll.js maps scroll position to a
+ * 0..1 progress value and drives ONLY transform + opacity on the layers below,
+ * so every frame stays on the compositor (no gradient repaints, no blur filters).
+ *
+ * The same pinned stage also hosts the media gallery (css/focus-gallery.css), which
+ * adds two more scroll phases: --focus-rise-distance and --focus-hold-distance.
+ *
+ * Tuning:
+ *  - Scroll distance:   --focus-scroll-distance (how long the glow + statement last)
+ *  - Colours:           --focus-base / --focus-glow-rgb / --focus-deep
+ *  - Timing of glow / text: constants at the top of js/focus-scroll.js
+ */
+
+.focus-scroll {
+  --focus-base: var(--paper);            /* the site's white */
+  --focus-glow-rgb: var(--mint-rgb);     /* brand green used for the glow */
+  --focus-deep: var(--mint-deep);        /* brand green of the final state */
+  --focus-scroll-distance: 220vh;        /* extra scroll while the stage is pinned */
+
+  position: relative;
+  width: 100%;
+  /* glow + statement, then (optional) media rise + pinned gallery */
+  height: calc(
+    100vh + var(--focus-scroll-distance)
+    + var(--focus-rise-distance, 0px) + var(--focus-hold-distance, 0px)
+  );
+  background: var(--focus-base);
+}
+
+/* Pinned full-viewport stage. `vh` (not `svh`) on purpose: on mobile it equals the
+   large viewport, so the stage never leaves a gap when the browser toolbar hides. */
+.focus-scroll-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  overflow: hidden;   /* clips the oversized glow layers: no horizontal overflow */
+  isolation: isolate;
+}
+
+.focus-scroll-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---- Layers (all start invisible: the section opens as clean white) ---- */
+
+.focus-fill {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--focus-deep);
+}
+
+.focus-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -8%;                 /* light source sits just below the bottom edge */
+  opacity: 0;
+  transform-origin: 50% 100%;  /* grows upward from bottom centre */
+  transform: translate3d(-50%, 12%, 0) scale(0.06);
+}
+
+/* Large, soft dome. The layer size follows the taller of width/height so the
+   glow stays roughly circular on portrait phones as well as wide desktops. */
+.focus-glow--wide {
+  width: max(200vw, 260vh);
+  height: 150vh;
+  background: radial-gradient(
+    ellipse 50% 100% at 50% 100%,
+    rgba(var(--focus-glow-rgb), 0.92) 0%,
+    rgba(var(--focus-glow-rgb), 0.84) 10%,
+    rgba(var(--focus-glow-rgb), 0.70) 22%,
+    rgba(var(--focus-glow-rgb), 0.52) 36%,
+    rgba(var(--focus-glow-rgb), 0.34) 50%,
+    rgba(var(--focus-glow-rgb), 0.18) 64%,
+    rgba(var(--focus-glow-rgb), 0.07) 78%,
+    rgba(var(--focus-glow-rgb), 0.02) 90%,
+    rgba(var(--focus-glow-rgb), 0) 100%
+  );
+}
+
+/* Smaller, denser hot-spot that gives the glow a bright heart while it rises. */
+.focus-glow--core {
+  width: max(110vw, 130vh);
+  height: 75vh;
+  background: radial-gradient(
+    ellipse 50% 100% at 50% 100%,
+    rgba(var(--focus-glow-rgb), 0.95) 0%,
+    rgba(var(--focus-glow-rgb), 0.78) 18%,
+    rgba(var(--focus-glow-rgb), 0.50) 38%,
+    rgba(var(--focus-glow-rgb), 0.22) 62%,
+    rgba(var(--focus-glow-rgb), 0.06) 84%,
+    rgba(var(--focus-glow-rgb), 0) 100%
+  );
+}
+
+/* Only promote the layers to the GPU while the section is actually on screen. */
+.focus-scroll.is-active .focus-fill,
+.focus-scroll.is-active .focus-glow,
+.focus-scroll.is-active .focus-line {
+  will-change: transform, opacity;
+}
+
+/* ---- Statement ---- */
+
+.focus-text {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  margin: 0;
+  padding-inline: var(--container-pad);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 6.8vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: #fff;
+  /* Soft deep-green halo keeps white text readable on the bright brand green. */
+  text-shadow: 0 2px 28px rgba(0, 96, 68, 0.28);
+}
+
+.focus-line {
+  display: block;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+/* The project ships no italic display face, so this is the display font's own
+   oblique. To use a real serif italic, set --focus-accent-font on .focus-scroll. */
+.focus-accent {
+  font-family: var(--focus-accent-font, inherit);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Arabic: no italics, no negative tracking, more line height for the script. */
+html[dir="rtl"] .focus-text {
+  letter-spacing: normal;
+  line-height: 1.35;
+}
+
+html[dir="rtl"] .focus-accent {
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: normal;
+}
+
+/* Tablets / phones: a slightly shorter track and tighter type. */
+@media (max-width: 780px) {
+  .focus-scroll {
+    --focus-scroll-distance: 200vh;
+  }
+
+  .focus-text {
+    line-height: 1.08;
+  }
+
+  html[dir="rtl"] .focus-text {
+    line-height: 1.4;
+  }
+}
+
+/* Reduced motion: no scroll scrubbing — show the finished green statement as a
+   normal, static block. */
+@media (prefers-reduced-motion: reduce) {
+  .focus-scroll {
+    height: auto;
+  }
+
+  .focus-scroll-stage {
+    position: relative;
+    height: auto;
+    min-height: 70vh;
+    padding-block: var(--space-2xl);
+  }
+
+  .focus-fill {
+    opacity: 1;
+  }
+
+  .focus-glow {
+    display: none;
+  }
+
+  .focus-line {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Statement + static gallery stack as normal content. */
+  .focus-scroll-stage {
+    gap: var(--space-xl);
+  }
+}

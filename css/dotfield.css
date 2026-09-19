@@ -1,0 +1,323 @@
+/*
+ * Dot field + contact — one large dark frame with an interactive dot grid behind the
+ * contact form and the contact details.
+ *
+ * It lives in the white .studio-stage section (between the statement and the footer),
+ * directly under "Let’s build something together." — that sentence is the heading of the
+ * frame, so the contact-page title is not repeated inside it.
+ *
+ *   Let’s build something together.                  <- statement (unchanged)
+ *
+ *   ╭─────────────────────────────────────────────────╮
+ *   │ · · · · · · · · · · · · · · · · · · · · · · · · │
+ *   │ · [ Name ] [ Email ] · · · · · ·  Contact info  │
+ *   │ · [ Service        ] · · · · · ·  hello@…       │   dots fill the whole frame
+ *   │ · [ Message        ] · · · · · ·  Instagram     │   and answer the mouse
+ *   │ · [ Send message ]   · · · · · ·  Behance       │
+ *   ╰─────────────────────────────────────────────────╯
+ *
+ * The dots are drawn on a canvas by js/dotfield.js. The form is the contact page's form,
+ * with the same ids and field names, so js/main.js (initContactForm) submits it to the
+ * same Formspree endpoint and shows the same success / error messages.
+ *
+ * Load order: after css/studio-stage.css. The two-class selectors below win over its
+ * one-class rules (including its media queries), so studio-stage.css stays untouched.
+ *
+ * Tuning:
+ *   --df-min-h    minimum height of the frame      --df-radius   corner radius
+ *   --df-pad-x/y  space between the frame edge and the content
+ *   --df-inset    space between the frame edge and the dots
+ *   --df-pull     how far the section is pulled up toward the statement
+ *   --df-bg / --df-ink / --df-accent   colours
+ *   dot spacing, size, reach, colours, easing: the tunables at the top of js/dotfield.js
+ */
+
+/* ---- Section: wider than the normal container, so the frame reads as big ---- */
+
+.studio-stage.studio-stage--dotfield {
+  --df-pull: clamp(2rem, 6vw, 5.5rem);
+  --studio-stage-min: 0px;                       /* no tall reserved area any more */
+
+  min-height: 0;
+  margin-top: calc(var(--df-pull) * -1);         /* the statement has generous space below it */
+  padding-block: 0 clamp(3rem, 7vw, 6rem);
+  padding-inline: clamp(0.75rem, 2vw, 2rem);
+}
+
+.studio-stage--dotfield .studio-stage-inner {
+  display: block;
+  min-height: 0;
+  max-width: 1680px;
+}
+
+/* ---- The frame ---- */
+
+.dotfield-stage {
+  --df-bg: #09080c;
+  --df-ink: #f1eef7;
+  --df-muted: rgba(241, 238, 247, 0.62);
+  --df-field: #131019;
+  --df-line: rgba(241, 238, 247, 0.14);
+  --df-accent: var(--mint, #00faa8);
+
+  --df-radius: clamp(20px, 2.8vw, 40px);
+  --df-inset: clamp(14px, 2vw, 28px);
+  --df-pad-x: clamp(1.5rem, 5vw, 5.5rem);
+  --df-pad-y: clamp(2.25rem, 7vh, 5rem);
+  --df-min-h: clamp(36rem, 96vh, 62rem);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: var(--df-min-h);
+  overflow: hidden;
+  border-radius: var(--df-radius);
+  background: var(--df-bg);
+  color: var(--df-ink);
+}
+
+.dotfield-canvas {
+  position: absolute;
+  top: var(--df-inset);
+  left: var(--df-inset);
+  z-index: 0;
+  display: block;
+  width: calc(100% - var(--df-inset) * 2);
+  height: calc(100% - var(--df-inset) * 2);
+  /* Vertical scrolling keeps working when a finger starts on the frame. */
+  touch-action: pan-y;
+}
+
+/* ---- Content: form on one side, contact details on the other, dots in between ---- */
+
+.dotfield-content {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 38rem) minmax(0, 20rem);
+  justify-content: space-between;
+  align-content: center;
+  align-items: start;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  padding: var(--df-pad-y) var(--df-pad-x);
+}
+
+/* Small text sits on top of the dots: a dark halo keeps it crisp when they light up. */
+.df-label,
+.df-info,
+.df-status {
+  text-shadow: 0 0 14px var(--df-bg), 0 0 4px var(--df-bg);
+}
+
+/* ---- Form ---- */
+
+.df-form {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.df-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+}
+
+.df-field {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.df-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--df-muted);
+}
+
+.df-input,
+.df-select,
+.df-textarea {
+  width: 100%;
+  padding: 0.9rem 1.05rem;
+  border: 1px solid var(--df-line);
+  border-radius: 12px;
+  background: var(--df-field);        /* solid: the dots never show through a field */
+  color: var(--df-ink);
+  font: inherit;
+  font-size: 1rem;                    /* 16px keeps iOS from zooming on focus */
+  line-height: 1.4;
+  transition: border-color var(--t-fast, 0.22s ease), box-shadow var(--t-fast, 0.22s ease);
+}
+
+.df-textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.df-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 2.75rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23f1eef7' stroke-opacity='.7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.05rem center;
+}
+
+html[dir="rtl"] .df-select {
+  background-position: left 1.05rem center;
+}
+
+.df-select option {
+  background: var(--df-field);
+  color: var(--df-ink);
+}
+
+.df-input:hover,
+.df-select:hover,
+.df-textarea:hover {
+  border-color: rgba(241, 238, 247, 0.3);
+}
+
+.df-input:focus,
+.df-select:focus,
+.df-textarea:focus {
+  outline: none;
+  border-color: rgba(241, 238, 247, 0.75);
+  box-shadow: 0 0 0 3px rgba(var(--violet-rgb, 135, 101, 203), 0.38);
+}
+
+.df-submit {
+  justify-self: start;
+  margin-top: 0.35rem;
+  padding: 0.95rem 1.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--df-accent);
+  color: var(--ink, #15121c);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--t-fast, 0.22s ease), background-color var(--t-fast, 0.22s ease), opacity var(--t-fast, 0.22s ease);
+}
+
+.df-submit:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.df-submit:focus-visible {
+  outline: 2px solid var(--df-ink);
+  outline-offset: 3px;
+}
+
+.df-submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+
+/* Messages are shown / hidden by js/main.js (it toggles .is-visible). */
+.df-status {
+  display: none;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--df-accent);
+}
+
+.df-status.is-visible {
+  display: block;
+}
+
+.df-status--error {
+  color: #ff9b9b;
+}
+
+/* ---- Contact details ---- */
+
+.df-info {
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
+}
+
+.df-info-title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.35rem, 1.05rem + 0.9vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--df-ink);
+}
+
+.df-info-text {
+  margin: 0 0 0.6rem;
+  max-width: 30ch;
+  line-height: 1.55;
+  color: var(--df-muted);
+}
+
+.df-info-link {
+  width: fit-content;
+  max-width: 100%;
+  color: var(--df-ink);
+  font-size: 1.0625rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size var(--t-med, 0.45s ease), color var(--t-fast, 0.22s ease);
+}
+
+html[dir="rtl"] .df-info-link {
+  background-position: 100% 100%;
+}
+
+.df-info-link:hover,
+.df-info-link:focus-visible {
+  background-size: 100% 1px;
+  color: var(--df-accent);
+  outline: none;
+}
+
+/* ---- Tablets and phones: one column, form first ---- */
+
+@media (max-width: 900px) {
+  .dotfield-content {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: 2.5rem;
+  }
+
+  .df-info-text {
+    max-width: 44ch;
+  }
+}
+
+@media (max-width: 560px) {
+  .dotfield-stage {
+    --df-min-h: 0px;                  /* the content decides the height on phones */
+  }
+
+  .df-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .df-input,
+  .df-select,
+  .df-textarea,
+  .df-submit,
+  .df-info-link {
+    transition: none;
+  }
+}

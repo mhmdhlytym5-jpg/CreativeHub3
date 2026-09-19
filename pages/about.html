@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem('siteLang') || 'en';
+        var html = document.documentElement;
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        if (lang === 'ar') html.classList.add('i18n-pending');
+      } catch (e) {}
+    })();
+  </script>
+  <style>html.i18n-pending body { visibility: hidden; }</style>
+
+  
+  <script>
+    (function () {
+      try {
+        var navType = 'navigate';
+        var entries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+        if (entries && entries[0]) {
+          navType = entries[0].type;
+        } else if (performance.navigation) {
+          navType = performance.navigation.type === 1 ? 'reload' : 'navigate';
+        }
+
+        if (navType !== 'reload' && sessionStorage.getItem('chSplashSeen')) {
+          document.documentElement.classList.add('loader-seen');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <title>About | Creative Hub</title>
+  <meta name="description" content="The people, story, and values behind Creative Hub — an independent design agency founded in 2018.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About | Creative Hub">
+  <meta property="og:description" content="The people, story, and values behind Creative Hub — an independent design agency founded in 2018.">
+  <meta property="og:image" content="https://creativehubstudio.site/assets/images/logo.png">
+  <meta property="og:url" content="https://creativehubstudio.site/pages/about.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#15121C">
+  <link rel="canonical" href="https://creativehubstudio.site/pages/about.html">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Alexandria:wght@400;600;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="page-loader" id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+    <span class="page-loader-frame" aria-hidden="true"></span>
+    <div class="page-loader-videos">
+      <video class="page-loader-media" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo2.webm" type="video/webm">
+      </video>
+      <video class="page-loader-media page-loader-media--secondary" autoplay muted loop playsinline aria-hidden="true">
+        <source src="../assets/videos/logo3.webm" type="video/webm">
+      </video>
+    </div>
+    <span class="page-loader-label" data-en="Creative Hub" data-ar="كرييتف هب">Creative Hub</span>
+    <span class="page-loader-counter"><span id="pageLoaderCounter">0</span>%</span>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+  <header class="site-header" id="siteHeader">
+    <div class="header-bar">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="Creative Hub logo" class="brand-logo">
+        <h3 class="brand-name">CreativeHub</h3>
+      </a>
+
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="services.html" class="nav-link" data-en="Services" data-ar="الخدمات">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a></li>
+          <li><a href="about.html" class="nav-link is-active" data-en="About" data-ar="من نحن">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" id="langToggle" class="lang-switch" aria-label="Switch language to Arabic">AR</button>
+        <a href="contact.html" class="btn btn-primary btn-sm" data-en="Let's Talk" data-ar="لنتحدث">Let's Talk</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open menu" aria-controls="mobileNavPanel">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <ul class="mobile-nav-list">
+      <li><a href="../index.html" class="mobile-nav-link"><span data-en="01" data-ar="٠١">01</span> <div data-en="Home" data-ar="الرئيسية">Home</div></a></li>
+      <li><a href="services.html" class="mobile-nav-link"><span data-en="02" data-ar="٠٢">02</span> <div data-en="Services" data-ar="الخدمات">Services</div></a></li>
+      <li><a href="portfolio.html" class="mobile-nav-link"><span data-en="03" data-ar="٠٣">03</span> <div data-en="Portfolio" data-ar="أعمالنا">Portfolio</div></a></li>
+      <li><a href="about.html" class="mobile-nav-link is-active"><span data-en="04" data-ar="٠٤">04</span> <div data-en="About" data-ar="من نحن">About</div></a></li>
+      <li><a href="contact.html" class="mobile-nav-link"><span data-en="05" data-ar="٠٥">05</span> <div data-en="Contact" data-ar="اتصل بنا">Contact</div></a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <div class="page-hero section--ink">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a> <span>/</span> <span class="current" data-en="About" data-ar="من نحن">About</span>
+        </div>
+        <h1 class="page-hero-title" data-en="We Make Ideas Visible." data-ar="نصنع أفكارًا تُرى.">We Make Ideas Visible.</h1>
+      </div>
+    </div>
+
+    <section class="section container reveal">
+      <div class="about-story-grid">
+        <div>
+          <p class="lead" data-en="At Creative Hub, we build visual identities that turn ideas into brands with a presence of their own." data-ar="نبني في Creative Hub هويات بصرية تحوّل الأفكار إلى علامات لها حضورها الخاص.">At Creative Hub, we build visual identities that turn ideas into brands with a presence of their own.</p>
+        </div>
+        <div class="about-story-body">
+          <blockquote class="pull-quote">
+            <span data-en='We design what stays in memory.' data-ar='نصمم ما يبقى في الذاكرة.'>We design what stays in memory.</span>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-en="What Drives Us" data-ar="ما الذي يحرّكنا">What Drives Us</span>
+          <h2 data-en="The values behind every project." data-ar="القيم التي تقود كل مشروع.">The values behind every project.</h2>
+        </div>
+        <div class="values-grid reveal-stagger">
+          <div class="value-card">
+            <span class="value-index">01</span>
+            <h3 data-en="Craft First" data-ar="الإتقان أولاً">Craft First</h3>
+            <p data-en="Every detail is considered — from kerning to motion timing." data-ar="كل تفصيلة مدروسة، من تباعد الأحرف إلى توقيت الحركة.">Every detail is considered — from kerning to motion timing.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-index">02</span>
+            <h3 data-en="Strategy Led" data-ar="مبني على الاستراتيجية">Strategy Led</h3>
+            <p data-en="Design decisions are grounded in business goals, not trends." data-ar="قراراتنا التصميمية مبنية على أهداف العمل، لا على الموضة العابرة.">Design decisions are grounded in business goals, not trends.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-index">03</span>
+            <h3 data-en="Radical Honesty" data-ar="صراحة تامة">Radical Honesty</h3>
+            <p data-en="We tell clients what they need to hear, not just what they want to hear." data-ar="نخبر عملاءنا بما يحتاجون سماعه، لا بما يريدون سماعه فقط.">We tell clients what they need to hear, not just what they want to hear.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section--tight container reveal">
+      <div class="stat-featured-row">
+        <div class="stat-featured">
+          <span class="stat-featured-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+          <span class="stat-featured-num" data-count="50" data-suffix="+">0</span>
+          <span class="stat-featured-label" data-en="Projects Delivered" data-ar="مشروع مُنجز">Projects Delivered</span>
+        </div>
+        <div class="stat-featured">
+          <span class="stat-featured-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 21v-2a4 4 0 0 0-3-3.85"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path><path d="M21 21v-2a4 4 0 0 0-3-3.85"></path><circle cx="9" cy="7" r="4"></circle><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path></svg></span>
+          <span class="stat-featured-num" data-count="40" data-suffix="K+">0</span>
+          <span class="stat-featured-label" data-en="Followers" data-ar="متابع">Followers</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-brand-name">CreativeHub</h3>
+          <p class="footer-blurb" data-en="Designing digital experiences and bold brand identities that leave a lasting mark." data-ar="نصمم تجارب رقمية وهويات بصرية جريئة تترك أثراً خالداً وتميزك عن المنافسين.">Designing digital experiences and bold brand identities that leave a lasting mark.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Pages" data-ar="الصفحات">Pages</h4>
+          <div class="footer-links">
+            <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+            <a href="services.html" data-en="Services" data-ar="الخدمات">Services</a>
+            <a href="portfolio.html" data-en="Portfolio" data-ar="أعمالنا">Portfolio</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Company" data-ar="الشركة">Company</h4>
+          <div class="footer-links">
+            <a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a>
+            <a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title" data-en="Social" data-ar="التواصل">Social</h4>
+          <div class="footer-links">
+            <a href="https://www.instagram.com/creative.huub/" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.behance.net/creativehub455" target="_blank" rel="noopener">Behance</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© <span class="js-year"></span> <span data-en="Creative Hub. All rights reserved." data-ar="كرييتف هب. جميع الحقوق محفوظة.">Creative Hub. All rights reserved.</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <script src="../js/navbar.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
