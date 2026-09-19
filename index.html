@@ -62,6 +62,7 @@
   <link rel="stylesheet" href="css/focus-fade.css">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/statement.css">
+  <link rel="stylesheet" href="css/card-stack.css">
   <link rel="stylesheet" href="css/dotfield.css">
 
   
@@ -408,6 +409,29 @@
       <div class="statement-inner">
         <p class="statement-text" id="statementText" data-st-en="Let’s build *something* together." data-st-ar="لنبنِ *شيئاً* معاً.">Let’s build <em>something</em> together.</p>
       </div>
+
+      <!-- Card stack: overlapping, tilted cards under the sentence (css/card-stack.css, js/card-stack.js).
+           Back cards first, the front card last. --x / --y are in card widths, --r in degrees. -->
+      <ul class="card-stack" data-card-stack data-no-logo-drop>
+        <li class="cs-card" style="--i:0; --x:-1.12; --y:0.10; --r:-9">
+          <div class="cs-face"><img class="cs-img" src="assets/images/3SIPS.webp" alt="3 Sips" loading="lazy" decoding="async"></div>
+        </li>
+        <li class="cs-card" style="--i:1; --x:1.12; --y:0.08; --r:8">
+          <div class="cs-face"><img class="cs-img" src="assets/images/CROSSA.webp" alt="Crossa" loading="lazy" decoding="async"></div>
+        </li>
+        <li class="cs-card" style="--i:2; --x:-0.58; --y:0.03; --r:-4.5">
+          <div class="cs-face"><img class="cs-img" src="assets/images/AERIS.webp" alt="Aeris" loading="lazy" decoding="async"></div>
+        </li>
+        <li class="cs-card" style="--i:3; --x:0.58; --y:0.02; --r:4">
+          <div class="cs-face"><img class="cs-img" src="assets/images/NARJES.webp" alt="Narjes" loading="lazy" decoding="async"></div>
+        </li>
+        <li class="cs-card cs-card--front" style="--i:4; --x:0; --y:-0.02; --r:-1">
+          <div class="cs-face">
+            <img class="cs-img" src="assets/images/NAWA.webp" alt="NAWA Arabic Coffee" loading="lazy" decoding="async">
+            <span class="cs-tag">NAWA</span>
+          </div>
+        </li>
+      </ul>
     </section>
 
     <!-- Studio stage: dedicated transition between the gallery and the footer.
@@ -506,6 +530,7 @@
   <script src="js/focus-gallery.js"></script>
   <script src="js/focus-fade.js"></script>
   <script src="js/statement.js"></script>
+  <script src="js/card-stack.js"></script>
   <script src="js/dotfield.js"></script>
   <script src="js/footer-rise.js"></script>
   <script src="js/main.js"></script>
