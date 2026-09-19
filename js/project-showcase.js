@@ -45,7 +45,13 @@
 
     function goTo(newIndex) {
       index = (newIndex + slides.length) % slides.length;
-      if (track) track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      // Crossfade: only the active slide is visible; the others are stacked underneath, faded out.
+      slides.forEach(function (slide, i) {
+        const isActive = i === index;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        slide.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
 
       dots.forEach(function (dot, i) {
         const isActive = i === index;
@@ -104,7 +110,13 @@
       applyText(titleEl, slides[index], 'title');
     });
 
+    // First state without animation (no fade-in flash on page load), then enable transitions.
+    if (track) track.classList.add('is-enhanced', 'is-init');
     goTo(0);
+    if (track) {
+      void track.offsetWidth;
+      track.classList.remove('is-init');
+    }
     startAutoplay();
 
     

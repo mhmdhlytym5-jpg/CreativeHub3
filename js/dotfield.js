@@ -43,7 +43,7 @@
   var REACH_SMALL = 140;
 
   var REST = [40, 36, 50];   // resting colour: barely lighter than the background
-  var LIT = [242, 239, 248]; // colour of a dot directly under the pointer
+  var LIT = [183, 163, 232]; // colour of a dot directly under the pointer: the site's light violet (#B7A3E8)
 
   var FOLLOW_MS = 75;        // pointer smoothing (higher = floatier)
   var IN_MS = 90;            // dots brighten with this time constant...
