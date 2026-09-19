@@ -1,0 +1,272 @@
+/*
+ * Card stack — a reusable fan of overlapping, slightly rotated cards with real depth.
+ *
+ * Markup (see index.html, right under the statement sentence):
+ *   <ul class="card-stack" data-card-stack>
+ *     <li class="cs-card" style="--i:0; --x:-1.12; --y:.10; --r:-9"><div class="cs-face"><img ...></div></li>
+ *     ... back cards first, the FRONT card last (add class cs-card--front) ...
+ *   </ul>
+ *
+ * Per card (inline custom properties):
+ *   --x / --y   offset from the centre, in card widths (so it scales with the card)
+ *   --r         rotation in degrees
+ *   --i         order, used for the entrance stagger
+ * Stack tuning (set on .card-stack or in a media query):
+ *   --cs-w      card width          --cs-xs   horizontal spread multiplier
+ *   --cs-rs     rotation multiplier --cs-ease easing curve
+ *
+ * States (js/card-stack.js only toggles classes; every movement is a CSS transition):
+ *   (no class)  final resting layout — what you see without JS or with reduced motion
+ *   .is-ready   JS is running: cards wait, gathered and faded, in the middle
+ *   .is-in      the stack has entered the screen: cards fan out to their places
+ *   :hover / .is-spread   a little more air and angle (hover on mouse, scroll/tap on touch)
+ *   .is-settled the entrance is over: stagger delays are dropped, the front card floats
+ *
+ * Only transform + opacity are animated.
+ */
+
+.card-stack {
+  --cs-w: clamp(8.5rem, 19vw, 16.5rem);
+  --cs-xs: 1;                     /* horizontal spread multiplier */
+  --cs-rs: 1;                     /* rotation multiplier */
+  --cs-ease: cubic-bezier(0.22, 0.9, 0.28, 1);
+  --cs-radius: clamp(14px, 1.7vw, 26px);
+
+  /* Current animated state. Resting = final layout. */
+  --k: 1;                         /* how far the cards are spread (0 = piled up) */
+  --rk: 1;                        /* how much they are rotated */
+  --lift: 0px;                    /* vertical offset of the whole group */
+
+  position: relative;
+  /* Only as wide as the fan itself, so the hover reacts to the cards, not to empty space. */
+  width: min(100%, calc(var(--cs-w) * (1 + 2.5 * var(--cs-xs)) + 2rem));
+  height: calc(var(--cs-w) * 1.3 + 2.5rem);
+  margin: clamp(2.5rem, 6vw, 5.5rem) auto 0;
+  padding: 0;
+  list-style: none;
+  direction: ltr;                 /* the fan is symmetric: keep it identical in the Arabic layout */
+  cursor: default;
+}
+
+.cs-card {
+  position: absolute;
+  top: 1.25rem;
+  left: 50%;
+  z-index: calc(var(--i) + 1);
+  width: var(--cs-w);
+  margin: 0 0 0 calc(var(--cs-w) / -2);
+  padding: 0;
+  list-style: none;
+  transform:
+    translate3d(
+      calc(var(--x) * var(--cs-w) * var(--k) * var(--cs-xs)),
+      calc(var(--y) * var(--cs-w) * var(--k) + var(--lift)),
+      0
+    )
+    rotate(calc(var(--r) * 1deg * var(--rk) * var(--cs-rs)))
+    scale(var(--s, 1));
+  transition:
+    transform 0.95s var(--cs-ease),
+    opacity 0.5s ease;
+  backface-visibility: hidden;
+}
+
+.cs-card--front {
+  --s: 1.05;
+}
+
+/* ---- The face: rounded card, layered soft shadow, a whisper of light on the edge ---- */
+
+.cs-face {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--cs-radius);
+  background: var(--violet-light, #f0ebfa);
+  box-shadow:
+    0 1px 2px rgba(var(--ink-rgb, 21, 18, 28), 0.06),
+    0 10px 22px -8px rgba(var(--ink-rgb, 21, 18, 28), 0.14),
+    0 34px 64px -26px rgba(var(--ink-rgb, 21, 18, 28), 0.26);
+}
+
+.cs-card--front .cs-face {
+  box-shadow:
+    0 1px 2px rgba(var(--ink-rgb, 21, 18, 28), 0.08),
+    0 16px 30px -10px rgba(var(--ink-rgb, 21, 18, 28), 0.18),
+    0 48px 90px -28px rgba(var(--violet-rgb, 135, 101, 203), 0.42);
+}
+
+.cs-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Depth: cards further back are veiled a little, the front card is clear.
+   (an overlay whose opacity is animated — cheaper than filter: brightness) */
+.cs-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: rgba(var(--paper-rgb, 250, 249, 252), var(--veil, 0.34));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.cs-card:nth-child(1) { --veil: 0.42; }
+.cs-card:nth-child(2) { --veil: 0.36; }
+.cs-card:nth-child(3) { --veil: 0.24; }
+.cs-card:nth-child(4) { --veil: 0.14; }
+.cs-card--front       { --veil: 0; }
+
+/* Soft sheen across the front card. */
+.cs-card--front .cs-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 38%);
+  pointer-events: none;
+}
+
+.cs-tag {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full, 999px);
+  background: rgba(var(--paper-rgb, 250, 249, 252), 0.86);
+  color: var(--ink, #15121c);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.cs-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint-deep, #00c489);
+}
+
+/* ---- Entrance: the cards start piled up and faded, then fan out ---- */
+
+.card-stack.is-ready:not(.is-in) {
+  --k: 0.1;
+  --rk: 0.25;
+  --lift: 46px;
+}
+
+.card-stack.is-ready:not(.is-in) .cs-card {
+  opacity: 0;
+}
+
+.card-stack.is-in:not(.is-settled) .cs-card {
+  transition-delay: calc(var(--i) * 85ms);
+}
+
+/* ---- Hover (mouse) / .is-spread (touch, set on scroll or tap): a little more air ---- */
+
+@media (hover: hover) and (pointer: fine) {
+  .card-stack.is-in:hover {
+    --k: 1.14;
+    --rk: 1.3;
+    --lift: -4px;
+  }
+
+  .card-stack.is-in:hover .cs-face::after {
+    opacity: 0.55;
+  }
+}
+
+.card-stack.is-in.is-spread {
+  --k: 1.14;
+  --rk: 1.3;
+  --lift: -4px;
+}
+
+.card-stack.is-in.is-spread .cs-face::after {
+  opacity: 0.55;
+}
+
+/* ---- The front card floats, very slightly ---- */
+
+.card-stack.is-settled .cs-card--front .cs-face {
+  animation: cs-float 7s ease-in-out infinite;
+}
+
+@keyframes cs-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -7px, 0) rotate(0.35deg); }
+}
+
+/* Only promote layers to the GPU while the stack is on screen. */
+.card-stack.is-visible .cs-card,
+.card-stack.is-visible .cs-face {
+  will-change: transform;
+}
+
+/* ---- Tablets and phones: smaller cards, smaller offsets and angles ---- */
+
+@media (max-width: 1024px) {
+  .card-stack {
+    --cs-w: clamp(8rem, 21vw, 14rem);
+    --cs-xs: 0.94;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-stack {
+    --cs-w: clamp(6.5rem, 29vw, 9.5rem);
+    --cs-xs: 0.68;                /* cards sit closer together: nothing leaves the screen */
+    --cs-rs: 0.7;                 /* ...and lean less */
+    --cs-radius: 14px;
+  }
+
+  .cs-tag {
+    left: 0.55rem;
+    bottom: 0.55rem;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.5625rem;
+  }
+}
+
+/* ---- Reduced motion: the finished layout, static ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .card-stack.is-ready:not(.is-in) {
+    --k: 1;
+    --rk: 1;
+    --lift: 0px;
+  }
+
+  .card-stack.is-ready:not(.is-in) .cs-card {
+    opacity: 1;
+  }
+
+  .cs-card,
+  .cs-face::after {
+    transition: none !important;
+  }
+
+  .card-stack.is-settled .cs-card--front .cs-face {
+    animation: none;
+  }
+}

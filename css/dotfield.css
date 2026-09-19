@@ -3,7 +3,7 @@
  * contact form and the contact details.
  *
  * It lives in the white .studio-stage section (between the statement and the footer),
- * directly under "Let’s build something together." — that sentence is the heading of the
+ * exactly as wide as the footer panel, directly under "Let’s build something together." — that sentence is the heading of the
  * frame, so the contact-page title is not repeated inside it.
  *
  *   Let’s build something together.                  <- statement (unchanged)
@@ -24,7 +24,7 @@
  * one-class rules (including its media queries), so studio-stage.css stays untouched.
  *
  * Tuning:
- *   --df-min-h    minimum height of the frame      --df-radius   corner radius
+ *   --df-min-h    minimum height of the frame      --df-radius   corner radius (= footer)
  *   --df-pad-x/y  space between the frame edge and the content
  *   --df-inset    space between the frame edge and the dots
  *   --df-pull     how far the section is pulled up toward the statement
@@ -32,7 +32,10 @@
  *   dot spacing, size, reach, colours, easing: the tunables at the top of js/dotfield.js
  */
 
-/* ---- Section: wider than the normal container, so the frame reads as big ---- */
+/* ---- Section: exactly as wide as the footer ----
+   The side padding (--container-pad) and the inner max-width (--container-max) come from
+   studio-stage.css and are the same values .home-footer uses, so the frame and the footer
+   panel line up edge to edge. */
 
 .studio-stage.studio-stage--dotfield {
   --df-pull: clamp(2rem, 6vw, 5.5rem);
@@ -41,13 +44,18 @@
   min-height: 0;
   margin-top: calc(var(--df-pull) * -1);         /* the statement has generous space below it */
   padding-block: 0 clamp(3rem, 7vw, 6rem);
-  padding-inline: clamp(0.75rem, 2vw, 2rem);
 }
 
 .studio-stage--dotfield .studio-stage-inner {
   display: block;
   min-height: 0;
-  max-width: 1680px;
+}
+
+/* The footer switches to a fixed 1.25rem side padding on small screens: do the same. */
+@media (max-width: 700px) {
+  .studio-stage.studio-stage--dotfield {
+    padding-inline: 1.25rem;
+  }
 }
 
 /* ---- The frame ---- */
@@ -60,11 +68,11 @@
   --df-line: rgba(241, 238, 247, 0.14);
   --df-accent: var(--mint, #00faa8);
 
-  --df-radius: clamp(20px, 2.8vw, 40px);
-  --df-inset: clamp(14px, 2vw, 28px);
-  --df-pad-x: clamp(1.5rem, 5vw, 5.5rem);
-  --df-pad-y: clamp(2.25rem, 7vh, 5rem);
-  --df-min-h: clamp(36rem, 96vh, 62rem);
+  --df-radius: clamp(1.4rem, 2.8vw, 2rem);       /* same corners as the footer panel */
+  --df-inset: clamp(12px, 1.6vw, 22px);
+  --df-pad-x: clamp(1.5rem, 4.5vw, 4rem);
+  --df-pad-y: clamp(1.75rem, 5vh, 3.5rem);
+  --df-min-h: clamp(30rem, 78vh, 46rem);
 
   position: relative;
   isolation: isolate;
@@ -97,11 +105,11 @@
   z-index: 1;
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: minmax(0, 38rem) minmax(0, 20rem);
+  grid-template-columns: minmax(0, 34rem) minmax(0, 18rem);
   justify-content: space-between;
   align-content: center;
   align-items: start;
-  gap: clamp(2.5rem, 6vw, 6rem);
+  gap: clamp(2rem, 5vw, 4.5rem);
   padding: var(--df-pad-y) var(--df-pad-x);
 }
 
@@ -116,13 +124,13 @@
 
 .df-form {
   display: grid;
-  gap: 1.15rem;
+  gap: 1rem;
 }
 
 .df-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.15rem;
+  gap: 1rem;
 }
 
 .df-field {
@@ -154,7 +162,7 @@
 }
 
 .df-textarea {
-  min-height: 9rem;
+  min-height: 7.5rem;
   resize: vertical;
 }
 
@@ -290,7 +298,7 @@ html[dir="rtl"] .df-info-link {
 
 /* ---- Tablets and phones: one column, form first ---- */
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .dotfield-content {
     grid-template-columns: minmax(0, 1fr);
     align-content: start;
